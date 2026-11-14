@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Museに丸投げ図鑑</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1530">
+<style>
+:root{--bg:#0b1530;--bg2:#101f45;--acc:#7dc5f2;--txt:#eaf4ff;--dim:#9db4d3;--ph:#ffd479;
+--spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-height:100vh;color:var(--txt);background:radial-gradient(120% 60% at 50% -10%,#16295a 0%,var(--bg) 60%);
+font-family:system-ui,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;font-weight:800;line-height:1.45;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;will-change:transform;opacity:.55}
+.o1{width:360px;height:360px;left:-120px;top:5%;background:radial-gradient(circle,rgba(125,197,242,.38),transparent 68%);animation:d1 19s ease-in-out infinite alternate}
+.o2{width:420px;height:420px;right:-160px;top:38%;background:radial-gradient(circle,rgba(183,156,255,.30),transparent 68%);animation:d2 24s ease-in-out infinite alternate}
+.o3{width:320px;height:320px;left:10%;bottom:-120px;background:radial-gradient(circle,rgba(111,227,193,.24),transparent 68%);animation:d3 21s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(120px,160px) scale(1.2)}}
+@keyframes d2{to{transform:translate(-140px,-120px) scale(.85)}}
+@keyframes d3{to{transform:translate(160px,-90px) scale(1.25)}}
+main{position:relative;z-index:1}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+.view.enter>*{animation:rise .6s var(--ease) both}
+.view.enter>*:nth-child(2){animation-delay:.06s}.view.enter>*:nth-child(3){animation-delay:.12s}.view.enter>*:nth-child(4){animation-delay:.18s}.view.enter>*:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* buttons */
+.btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:0 22px;border-radius:18px;font-size:18px;font-weight:900;letter-spacing:.02em;
+transition:transform .35s var(--spring),box-shadow .3s}
+.btn:active{transform:scale(.92)}
+.btn.main{color:#06142e;background:linear-gradient(135deg,#a9defa,#6db8ee);box-shadow:0 0 0 1px rgba(255,255,255,.5) inset,0 8px 30px rgba(125,197,242,.45);animation:pulse 3.2s ease-in-out infinite}
+.btn.ghost{background:rgba(125,197,242,.08);border:1.5px solid rgba(125,197,242,.55);box-shadow:0 0 22px rgba(125,197,242,.18)}
+@keyframes pulse{50%{box-shadow:0 0 0 1px rgba(255,255,255,.5) inset,0 8px 44px rgba(125,197,242,.8)}}
+.pop{animation:pop .5s var(--spring)}
+@keyframes pop{0%{transform:scale(.88)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+
+/* hero */
+#hero{min-height:100svh;display:flex;flex-direction:column;padding-top:max(28px,env(safe-area-inset-top))}
+#hero .top{padding-top:8px;width:100%}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);letter-spacing:.18em}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc);animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.3}}
+h1{margin-top:12px;font-size:clamp(36px,11vw,64px);line-height:1.12;font-weight:900;letter-spacing:-.01em;
+background:linear-gradient(100deg,#fff 0%,#9fd6f7 30%,#fff 50%,#7dc5f2 70%,#fff 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 0 24px rgba(125,197,242,.35))}
+@keyframes shine{to{background-position:-250% 0}}
+.lead{text-wrap:balance;margin-top:12px;font-size:17px;color:var(--dim)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.stat{padding:12px 6px 10px;text-align:center;border-radius:16px;background:rgba(125,197,242,.07);border:1px solid rgba(125,197,242,.28);box-shadow:0 0 24px rgba(125,197,242,.1) inset}
+.stat b{display:block;font-size:34px;line-height:1.05;font-weight:900;color:#fff;text-shadow:0 0 18px rgba(125,197,242,.8);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--dim)}
+.cta{display:grid;gap:10px;margin-top:22px}
+.cta2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn.sm{min-height:50px;padding:0 10px;font-size:15px;border-radius:16px}
+.lastbtn{margin-top:12px;min-height:44px;font-size:14px;color:var(--acc);text-decoration:underline;text-underline-offset:4px}
+.marq{overflow:hidden;margin:auto 0;padding:34px 0 34px;display:grid;gap:14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.track{display:flex;gap:12px;width:max-content;will-change:transform;animation:slide 70s linear infinite}
+.track.rev{animation-direction:reverse;animation-duration:85s}
+@keyframes slide{to{transform:translateX(-50%)}}
+.mini{flex:none;width:250px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--c) 22%,transparent)}
+.mini small{display:block;font-size:12px;color:var(--c);letter-spacing:.1em}
+.mini b{display:block;font-size:18px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:8px;padding-top:max(14px,env(safe-area-inset-top));min-height:64px}
+.back{width:48px;height:48px;border-radius:14px;background:rgba(125,197,242,.1);border:1px solid rgba(125,197,242,.35);font-size:22px;transition:transform .3s var(--spring);flex:none}
+.back:active{transform:scale(.88)}
+.bar .ttl{font-size:20px;font-weight:900;flex:1}
+.bar .cnt{font-size:14px;color:var(--acc)}
+
+/* diag */
+.prog{height:8px;border-radius:8px;background:rgba(125,197,242,.15);overflow:hidden;flex:1}
+.prog i{display:block;height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#6db8ee,#b79cff,#ff8fc2);box-shadow:0 0 14px var(--acc);transition:width .6s var(--ease)}
+.qwrap{padding-top:clamp(20px,8vh,70px)}
+.qn{font-size:14px;color:var(--acc);letter-spacing:.2em}
+.q{margin:10px 0 24px;font-size:clamp(26px,7.4vw,40px);line-height:1.3;font-weight:900}
+.opts{display:grid;gap:12px}
+.opt{min-height:62px;padding:12px 18px;text-align:left;font-size:18px;font-weight:800;border-radius:18px;background:rgba(125,197,242,.08);border:1.5px solid rgba(125,197,242,.35);transition:transform .35s var(--spring),background .2s,border-color .2s,box-shadow .3s}
+.opt:active{transform:scale(.94)}
+.opt.sel{background:rgba(125,197,242,.3);border-color:#bfe6fb;box-shadow:0 0 28px rgba(125,197,242,.6);animation:pop .45s var(--spring)}
+.qbody.in .opt{animation:rise .5s var(--ease) both}
+.qbody.in .opt:nth-child(2){animation-delay:.07s}.qbody.in .opt:nth-child(3){animation-delay:.14s}.qbody.in .opt:nth-child(4){animation-delay:.21s}.qbody.in .opt:nth-child(5){animation-delay:.28s}
+.qbody.in .q,.qbody.in .qn{animation:rise .45s var(--ease) both}
+.qbody.out{opacity:0;transform:translateX(-30px);transition:.22s}
+
+/* result */
+.rtop{text-align:center;padding:30px 0 6px}
+.rtop small{font-size:14px;color:var(--acc);letter-spacing:.2em}
+.rname{margin-top:10px;font-size:clamp(34px,10vw,56px);font-weight:900;line-height:1.15;background:linear-gradient(100deg,#fff,#7dc5f2 50%,#ff8fc2);-webkit-background-clip:text;background-clip:text;color:transparent;animation:bloom 1s var(--ease) both;filter:drop-shadow(0 0 20px rgba(125,197,242,.5))}
+@keyframes bloom{from{opacity:0;transform:scale(.7);filter:blur(14px)}to{opacity:1;transform:none}}
+.rtext{margin-top:8px;color:var(--dim);font-size:15px;animation:rise .6s .5s var(--ease) both}
+.rhead{margin:22px 0 12px;font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px}
+.rhead::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--acc);box-shadow:0 0 12px var(--acc)}
+.rgo{display:grid;gap:12px;margin:22px 0 40px}
+.fly{animation:fly .7s var(--spring) both}
+@keyframes fly{from{opacity:0;transform:translateY(60px) scale(.8) rotate(-3deg)}to{opacity:1;transform:none}}
+
+/* zukan */
+.chips{display:flex;flex-wrap:wrap;gap:7px;padding:6px 0 14px}
+.chip{flex:none;min-height:40px;padding:0 12px;border-radius:20px;font-size:13.5px;font-weight:900;background:rgba(255,255,255,.05);border:1.5px solid color-mix(in srgb,var(--c,var(--acc)) 50%,transparent);transition:transform .35s var(--spring),background .25s,box-shadow .3s}
+.chip:active{transform:scale(.9)}
+.chip.on{color:#06142e;background:var(--c,var(--acc));box-shadow:0 0 22px color-mix(in srgb,var(--c,var(--acc)) 70%,transparent)}
+.tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 14px}
+.sw{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px}
+.sw i{position:relative;width:52px;height:30px;border-radius:15px;background:rgba(255,255,255,.12);border:1px solid rgba(125,197,242,.4);transition:background .25s,box-shadow .3s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .4s var(--spring)}
+.sw[aria-checked=true] i{background:#7dc5f2;box-shadow:0 0 18px rgba(125,197,242,.8)}
+.sw[aria-checked=true] i::after{transform:translateX(22px)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:50px;transition:opacity .15s}
+.grid.out{opacity:0}
+.card{position:relative;display:flex;flex-direction:column;gap:6px;min-height:156px;padding:14px 13px 12px;text-align:left;border-radius:20px;overflow:hidden;
+background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),rgba(255,255,255,.03) 60%);
+border:1px solid color-mix(in srgb,var(--c) 42%,transparent);box-shadow:0 0 26px color-mix(in srgb,var(--c) 16%,transparent),0 1px 0 rgba(255,255,255,.12) inset;
+opacity:0;transform:translateY(26px) scale(.94);transition:opacity .5s var(--ease),transform .5s var(--spring),box-shadow .3s}
+.card.in{opacity:1;transform:none}
+.card.in:active{transform:scale(.93);transition-duration:.15s}
+.card::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 40%,transparent),transparent 70%);pointer-events:none}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.card .num{font-size:22px;font-weight:900;color:var(--c);text-shadow:0 0 14px var(--c);font-variant-numeric:tabular-nums}
+.card .cat{white-space:nowrap;font-size:11px;padding:3px 8px;border-radius:10px;color:#06142e;background:var(--c)}
+.card .t{text-wrap:balance;font-size:17px;line-height:1.28;font-weight:900;margin-top:2px}
+.card .h{font-size:12.5px;line-height:1.4;color:var(--dim);font-weight:700}
+.card .wt{margin-top:auto;padding-top:4px;display:flex;align-items:center;gap:4px;font-size:11px;color:var(--dim)}
+.card .wt i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)}
+.card .wt i.f{background:var(--c);box-shadow:0 0 8px var(--c)}
+.card .wt em{font-style:normal;margin-left:4px}
+.card .lv{position:absolute;right:12px;bottom:11px;font-size:10px;color:var(--c);opacity:.9}
+.empty{grid-column:1/-1;text-align:center;padding:50px 0;color:var(--dim)}
+
+/* sheet */
+.back-d{position:fixed;inset:0;z-index:20;background:rgba(3,8,22,.65);opacity:0;transition:opacity .3s}
+.back-d.on{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-width:600px;margin:0 auto;max-height:92svh;display:flex;flex-direction:column;border-radius:26px 26px 0 0;
+background:linear-gradient(180deg,#14275a,#0d1a3c);border:1px solid color-mix(in srgb,var(--c) 55%,transparent);border-bottom:0;box-shadow:0 -10px 60px color-mix(in srgb,var(--c) 28%,transparent);
+transform:translateY(105%);transition:transform .5s var(--ease)}
+.sheet.on{transform:none}
+.grab{width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.3);margin:10px auto 0;flex:none}
+.sh{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 16px;flex:none}
+.sh .num{font-size:26px;font-weight:900;color:var(--c);text-shadow:0 0 14px var(--c)}
+.sh .st{flex:1;font-size:19px;font-weight:900;line-height:1.25}
+.x{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);font-size:20px;transition:transform .3s var(--spring)}
+.x:active{transform:scale(.85)}
+.sb{overflow-y:auto;padding:4px 16px calc(28px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.lab{display:inline-block;font-size:12px;letter-spacing:.12em;padding:3px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--c);margin:8px 0}
+.bubble{position:relative;padding:14px 16px;border-radius:18px 18px 18px 4px;background:rgba(125,197,242,.13);border:1px solid rgba(125,197,242,.4);font-size:16px;line-height:1.7;font-weight:700}
+.bubble .ph{-webkit-box-decoration-break:clone;box-decoration-break:clone;color:#1a1203;background:var(--ph);padding:1px 6px;border-radius:7px;font-weight:900;box-shadow:0 0 14px rgba(255,212,121,.55);animation:phg 2.4s ease-in-out infinite}
+@keyframes phg{50%{box-shadow:0 0 4px rgba(255,212,121,.2)}}
+.copy{margin-top:12px;width:100%}
+.copy.done{background:linear-gradient(135deg,#b4f2dd,#6fe3c1);box-shadow:0 8px 30px rgba(111,227,193,.5);animation:pop .5s var(--spring)}
+.fb{width:100%;margin-top:10px;min-height:90px;padding:10px;border-radius:12px;background:#07102a;color:var(--txt);border:1px solid var(--acc);font:inherit;font-size:14px}
+.arrow{display:flex;justify-content:center;padding:14px 0 4px}
+.arrow span{font-size:13px;color:var(--c);padding:6px 14px;border-radius:16px;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(5px)}}
+.row-i{opacity:0;transform:translateY(8px);transition:opacity .35s,transform .45s var(--spring)}
+.row-i.on{opacity:1;transform:none}
+.u{opacity:0}
+.scr{margin-top:8px;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12)}
+.scr .hd{padding:10px 14px;font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px}
+/* list */
+.k-list{background:#10204a}
+.k-list .hd{background:rgba(125,197,242,.14);color:var(--acc)}
+.k-list .hd::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--acc)}
+.k-list ul{list-style:none;padding:8px 14px 14px}
+.k-list li{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.12);font-size:15px;line-height:1.5}
+.k-list li:last-child{border:0}
+.ck{flex:none;position:relative;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--acc)}
+.ck::after{content:"";position:absolute;left:5px;top:1px;width:6px;height:12px;border:solid #06142e;border-width:0 3px 3px 0;transform:rotate(40deg) scale(0);transition:transform .4s var(--spring)}
+.on .ck{background:var(--acc);box-shadow:0 0 12px var(--acc)}
+.on .ck::after{transform:rotate(40deg) scale(1)}
+/* doc */
+.k-doc{background:#f6f3ea;color:#25283a;border-color:#fff}
+.k-doc .pp{padding:22px 20px 24px;}
+.k-doc h4{font-size:19px;margin-bottom:12px;padding-bottom:10px;border-bottom:3px solid #7dc5f2}
+.k-doc p{font-size:15px;line-height:34px;font-weight:700;margin:0}
+/* table */
+.k-table{background:#0f1c40}
+.k-table .hd{background:rgba(111,227,193,.16);color:#6fe3c1}
+.tb{display:grid;grid-template-columns:minmax(64px,32%) 1fr}
+.tb>div{padding:11px 12px;font-size:14.5px;line-height:1.45;border-bottom:1px solid rgba(255,255,255,.1)}
+.tb>div:nth-child(odd){background:rgba(255,255,255,.06);color:#6fe3c1;font-weight:900;border-right:1px solid rgba(255,255,255,.1)}
+/* chat */
+.k-chat{background:#0e1b3d;padding-bottom:14px}
+.k-chat .hd{background:rgba(183,156,255,.16);color:#c9b6ff}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#7dc5f2,#b79cff);display:grid;place-items:center;color:#06142e;font-size:13px;font-weight:900;box-shadow:0 0 12px #b79cff}
+.cb{display:grid;gap:8px;padding:12px 14px 2px;justify-items:start}
+.bb{max-width:92%;padding:10px 14px;border-radius:16px 16px 16px 4px;background:rgba(183,156,255,.18);border:1px solid rgba(183,156,255,.4);font-size:14.5px;line-height:1.55}
+/* site */
+.k-site{background:#e9eef8;color:#14203f}
+.bw{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#cfd8ea}
+.bw i{width:10px;height:10px;border-radius:50%;background:#ff8fa3}.bw i:nth-child(2){background:#ffd479}.bw i:nth-child(3){background:#6fe3c1}
+.url{flex:1;margin-left:6px;padding:4px 12px;border-radius:12px;background:#fff;font-size:12px;color:#51608a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg{padding:0 0 16px}
+.hero-s{padding:22px 16px;background:linear-gradient(135deg,#7dc5f2,#b79cff);color:#06142e}
+.hero-s h4{font-size:21px;line-height:1.3}
+.hero-s p{font-size:14px;margin-top:6px}
+.blk{margin:10px 14px 0;padding:11px 14px;border-radius:12px;background:#fff;border-left:5px solid #7dc5f2;font-size:14px;box-shadow:0 2px 10px rgba(20,32,63,.08)}
+.fk{margin:14px 14px 0;display:inline-block;padding:10px 22px;border-radius:20px;background:#14203f;color:#fff;font-size:14px}
+/* image */
+.k-image{background:#0b1530;padding:14px;border-color:transparent;box-shadow:none}
+.fr{padding:10px;border-radius:6px;background:linear-gradient(135deg,#f3dca0,#b88a3e 40%,#f6e4b0 60%,#a97c32);box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.art{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(160deg,#7dc5f2,#b79cff 60%,#ff8fc2)}
+.art b{position:absolute;border-radius:50%}
+.art .a1{width:58%;aspect-ratio:1;left:-10%;top:-14%;background:rgba(255,255,255,.35)}
+.art .a2{width:70%;aspect-ratio:1;right:-18%;bottom:-30%;background:rgba(11,21,48,.5)}
+.art .a3{width:26%;aspect-ratio:1;right:18%;top:14%;background:#ffd479;box-shadow:0 0 30px #ffd479}
+.art .cap{position:absolute;left:10px;right:10px;bottom:10px;padding:10px 12px;border-radius:12px;background:rgba(8,16,40,.7);color:#fff;font-size:13.5px;line-height:1.5}
+.cap strong{display:block;font-size:14px;color:#ffd479;margin-bottom:2px}
+.plate{margin:12px auto 0;width:max-content;max-width:100%;padding:5px 16px;border-radius:5px;background:#e8d8a8;color:#3c2c10;font-size:12px}
+
+/* routes */
+.rlead{margin:4px 0 14px;font-size:15px;color:var(--dim);text-wrap:balance}
+.rlist{display:grid;gap:12px;padding:8px 0 50px}
+.rcard{position:relative;display:block;width:100%;text-align:left;padding:16px 16px 14px;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,rgba(125,197,242,.16),rgba(255,255,255,.03) 65%);border:1px solid rgba(125,197,242,.45);box-shadow:0 0 26px rgba(125,197,242,.14),0 1px 0 rgba(255,255,255,.12) inset;transition:transform .35s var(--spring),box-shadow .3s}
+.rcard:active{transform:scale(.95)}
+.rcard::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(125,197,242,.4),transparent 70%);pointer-events:none}
+.rcard .rt{display:block;font-size:20px;font-weight:900;line-height:1.3;padding-right:34px;text-wrap:balance}
+.rcard .rl{display:block;margin-top:6px;font-size:14px;line-height:1.5;color:var(--dim);font-weight:700}
+.rcard .rm{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:var(--acc);flex-wrap:wrap}
+.rcard .rm span{padding:3px 10px;border-radius:10px;background:rgba(125,197,242,.14)}
+.rcard.fin{border-color:#6fe3c1;box-shadow:0 0 28px rgba(111,227,193,.3)}
+.pl{display:block;height:6px;margin-top:12px;border-radius:6px;background:rgba(125,197,242,.16);overflow:hidden}
+.pl i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#6db8ee,#6fe3c1);box-shadow:0 0 12px var(--acc);transition:width .7s var(--ease)}
+.rhd{padding:4px 0 14px}
+.rhd h2{font-size:clamp(22px,6.4vw,30px);line-height:1.25;font-weight:900;text-wrap:balance}
+.rhd p{margin-top:6px;font-size:14px;color:var(--dim)}
+.rhd .pc{margin-top:6px;font-size:13px;color:var(--acc)}
+.steps{display:grid;padding-bottom:20px}
+.step{position:relative;display:grid;grid-template-columns:44px 1fr;column-gap:12px;padding-bottom:18px}
+.nd{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;color:var(--c);background:#0d1a3c;border:2px solid var(--c);box-shadow:0 0 16px color-mix(in srgb,var(--c) 40%,transparent);transition:background .3s,color .3s}
+.step.done .nd{background:var(--c);color:#06142e}
+.nd.pop{animation:pop .55s var(--spring)}
+.rail{position:absolute;left:20px;top:44px;bottom:0;width:4px;border-radius:3px;background:rgba(125,197,242,.18);overflow:hidden}
+.rail i{display:block;width:100%;height:100%;border-radius:3px;background:linear-gradient(180deg,var(--c),#fff);box-shadow:0 0 12px var(--c);transform:scaleY(0);transform-origin:top;transition:transform .8s var(--ease)}
+.step.done .rail i{transform:scaleY(1)}
+.sbtn{display:block;width:100%;text-align:left;min-height:64px;padding:12px 14px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),rgba(255,255,255,.03) 60%);border:1px solid color-mix(in srgb,var(--c) 42%,transparent);transition:transform .35s var(--spring),box-shadow .5s,border-color .5s}
+.sbtn:active{transform:scale(.95)}
+.sbtn .sc{display:inline-block;font-size:11px;padding:2px 8px;border-radius:9px;color:#06142e;background:var(--c)}
+.sbtn .st2{display:block;margin-top:5px;font-size:17px;line-height:1.3;font-weight:900}
+.sbtn .sd{display:block;margin-top:5px;font-size:14px;line-height:1.5;color:var(--txt);font-weight:700}
+.step.done .sbtn{opacity:.72}
+.step.next .sbtn{border-color:var(--c);box-shadow:0 0 28px color-mix(in srgb,var(--c) 55%,transparent);animation:nx 2.2s ease-in-out infinite}
+.step.next .nd{box-shadow:0 0 24px var(--c)}
+@keyframes nx{50%{box-shadow:0 0 12px color-mix(in srgb,var(--c) 25%,transparent)}}
+.pass{display:inline-block;margin-top:10px;max-width:100%;font-size:12.5px;line-height:1.45;font-weight:700;color:var(--c);padding:5px 12px;border-radius:14px;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:rgba(255,255,255,.04)}
+.stepcol{min-width:0;padding-bottom:2px}
+.fin2{position:relative;margin:6px 0 20px;padding:22px 16px;text-align:center;border-radius:22px;overflow:hidden;background:rgba(111,227,193,.1);border:1px solid #6fe3c1;box-shadow:0 0 30px rgba(111,227,193,.35)}
+.fin2 b{position:relative;display:block;font-size:24px;font-weight:900;color:#b4f2dd}
+.fin2 span{position:relative;display:block;margin-top:4px;font-size:14px;color:var(--dim)}
+.fin2.glow::before{content:"";position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px;border-radius:50%;background:radial-gradient(circle,rgba(111,227,193,.7),transparent 70%);animation:burst 1.4s var(--ease) both}
+@keyframes burst{to{transform:scale(9);opacity:0}}
+.rbtn{width:100%;margin:0 0 40px;min-height:48px;font-size:15px}
+.dn{width:100%;margin-top:16px}
+.dn.undo{background:rgba(255,255,255,.06)}
+.via{margin-top:14px;display:grid;gap:8px}
+.via .btn{min-height:48px;font-size:15px;text-align:center;padding:6px 16px}
+footer{position:relative;z-index:1;padding:26px 16px calc(34px + env(safe-area-inset-bottom));text-align:center;font-size:13px;color:var(--dim)}
+@media (min-width:700px){.sheet{border-radius:26px;bottom:4vh;border-bottom:1px solid color-mix(in srgb,var(--c) 55%,transparent)}.cta{max-width:560px}.grid{gap:16px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;transform:none}.row-i{opacity:1;transform:none}html{scroll-behavior:auto}}
+.guide{margin:6px 0 50px;padding:20px 16px 18px;border-radius:22px;text-align:center;background:linear-gradient(160deg,rgba(125,197,242,.16),rgba(255,255,255,.03));border:1px solid rgba(125,197,242,.4);box-shadow:0 0 30px rgba(125,197,242,.14)}
+.guide .gt{font-size:19px;font-weight:900}.guide .gl{margin:6px 0 14px;font-size:13.5px;color:var(--dim);font-weight:700}.guide .btn{width:100%}
+#zukan .grid{padding-bottom:26px}
+footer{padding-top:8px}
+footer .ft{max-width:520px;margin:0 auto;padding:22px 16px 0;font-size:17px;font-weight:900;color:var(--txt);line-height:1.5;text-wrap:balance}
+footer .oc{display:flex;max-width:520px;margin:14px auto 0;text-decoration:none;min-height:60px;font-size:19px}
+.glist{display:grid;gap:10px}.glist.two{grid-template-columns:1fr 1fr}
+.gr{display:flex;flex-direction:column;gap:4px;justify-content:center;min-height:64px;padding:12px 12px;border-radius:16px;text-align:left;background:rgba(125,197,242,.1);border:1.5px solid rgba(125,197,242,.5);box-shadow:0 0 18px rgba(125,197,242,.16);transition:transform .35s var(--spring)}
+.gr:active{transform:scale(.94)}.gr b{font-size:15.5px;line-height:1.3;font-weight:900}.gr small{font-size:12px;color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="orbs" aria-hidden="true"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<main>
+<section id="hero" class="view enter">
+  <div class="top wrap">
+    <span class="badge"><i></i>MUSE</span>
+    <h1 id="hTitle"></h1>
+    <p class="lead" id="hLead"></p>
+    <div class="stats" id="stats"></div>
+    <div class="cta">
+      <button class="btn main" id="bStart"></button>
+      <button class="btn ghost" id="bAll"></button>
+    </div>
+    <button class="lastbtn" id="bLast" hidden>前の結果を見る</button>
+  </div>
+  <div class="marq" id="marq" aria-hidden="true"></div>
+</section>
+
+<section id="diag" class="view wrap" hidden>
+  <div class="bar"><button class="back" id="dBack" aria-label="もどる">←</button><div class="prog"><i id="prog"></i></div></div>
+  <div class="qwrap qbody" id="qbody"></div>
+</section>
+
+<section id="result" class="view wrap" hidden>
+  <div class="bar"><button class="back" id="rBack" aria-label="もどる">←</button></div>
+  <div class="rtop"><small>あなたは</small><div class="rname" id="rName"></div><p class="rtext" id="rText"></p></div>
+  <div class="rhead">あなたに向く10枚</div>
+  <div class="grid" id="rGrid"></div>
+  <div class="rgo"><button class="btn main" id="rAll"></button></div>
+</section>
+
+<section id="zukan" class="view wrap" hidden>
+  <div class="bar"><button class="back" id="zBack" aria-label="もどる">←</button><div class="ttl">図鑑</div><div class="cnt" id="zCnt"></div></div>
+  <div class="chips" id="chips"></div>
+  <div class="tools"><button class="sw" id="sw" role="switch" aria-checked="false"><i></i><span>はじめてだけ</span></button></div>
+  <div class="grid" id="zGrid"></div>
+  <div class="guide" id="zGuide"><div class="gt" id="gT"></div><p class="gl" id="gL"></p><div class="glist" id="gList"></div></div>
+</section>
+<section id="routes" class="view wrap" hidden>
+  <div class="bar"><button class="back" id="rtBack" aria-label="もどる">←</button><div class="ttl" id="rtTitle"></div></div>
+  <p class="rlead" id="rtLead" hidden></p>
+  <div class="rlist" id="rtList"></div>
+</section>
+
+<section id="route" class="view wrap" hidden>
+  <div class="bar"><button class="back" id="rdBack" aria-label="もどる">←</button><div class="ttl">道すじ</div></div>
+  <div class="rhd" id="rdHead"></div>
+  <div class="steps" id="rdSteps"></div>
+  <div id="rdFoot"></div>
+</section>
+</main>
+<footer id="foot"></footer>
+
+<div class="back-d" id="bd" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="カード" hidden>
+  <div class="grab"></div>
+  <div class="sh"><span class="num" id="sNum"></span><span class="st" id="sTitle"></span><button class="x" id="sX" aria-label="とじる">✕</button></div>
+  <div class="sb" id="sBody"></div>
+</div>
+
+<script>
+"use strict";
+const CARDS=[{"id":"c001","cat":"アカウント設計","title":"経験から分野を探す","hook":"入る分野の候補が3つ見える","ask":"私に1問ずつ質問して、［仕事・好きな事・人によく聞かれる事］を聞き出して。答えから、発信する分野の候補を3つ出して。","result":{"kind":"chat","title":"分野さがしの質問","lines":["1問目：仕事で人に頼られる事は？","2問目：時間を忘れて続けられる事は？","…1問ずつ、答えを聞きながら進めます","候補：仕事の時短／読書／手帳の使い方"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c002","cat":"アカウント設計","title":"伸びている人を表に","hook":"その分野の先を行く人が一覧に","ask":"［仕事の時短］の分野で、Threadsで伸びているアカウントを10個調べ、何の人か・よく出す投稿・続けた長さを表に。フォローはしないで。","result":{"kind":"table","title":"伸びている10アカウント","lines":["A｜事務の時短｜手順の短い投稿｜1年","B｜手帳の使い方｜写真と体験談｜2年","C｜AIの頼み方｜例文の紹介｜半年","D〜J｜ほか7個も同じ形で","多い形｜毎日、手順を短く出している"]},"weight":"ふつう","level":"はじめて","tags":["learn"]},{"id":"c003","cat":"アカウント設計","title":"共通点と空いた席","hook":"まだ誰も名乗っていない立場が分かる","ask":"［伸びている人の表を貼る］。共通点を3つと、まだ誰も立っていない立場（例：子育て中・入社3年目）を3つ、表にして。","result":{"kind":"table","title":"共通点と空いている席","lines":["共通点｜毎日同じ時間に出している","共通点｜自分の失敗も書いている","空いた席｜定時で帰りたい事務の人","空いた席｜AIがこわかった人の目線"]},"weight":"ふつう","level":"慣れたら","tags":["learn","idea"]},{"id":"c004","cat":"アカウント設計","title":"自分ならではの切り口","hook":"同じ分野でも自分の席ができる","ask":"［私の経験］と［空いている立場］を合わせて、自分ならではの切り口を3案。それぞれ向く人と、続けやすさも添えて。","result":{"kind":"list","title":"切り口3案","lines":["案1：定時で帰る事務員のAIメモ","案2：AIが苦手だった人の練習帳","案3：手帳とAIを両方使う仕事術","続けやすいのは案1。毎日の仕事が種"]},"weight":"軽め","level":"慣れたら","tags":["idea"]},{"id":"c005","cat":"アカウント設計","title":"届けたい1人を決める","hook":"誰に向けて書くか迷わなくなる","ask":"私に5つ質問して、発信を届けたい1人を決めて。仕事・1日の流れ・困り事・読んだ後の姿まで、1人の人として書いて。","result":{"kind":"doc","title":"届けたい1人","lines":["30代・事務の会社員・子どもが1人","朝は支度で手いっぱい、夜は疲れている","困り事：残業がなかなか減らない","読んだ後：定時で帰れる日が増える"]},"weight":"軽め","level":"はじめて","tags":["idea","org"]},{"id":"c006","cat":"アカウント設計","title":"コンセプトを1文に","hook":"コンセプト＝ひとことで言うと何の人か","ask":"［選んだ切り口］から、コンセプト（＝ひとことで言うと何の人か）を1文で3案。誰に何を届けるかが見える形で、むずかしい言葉なしで。","result":{"kind":"doc","title":"コンセプト3案","lines":["案1：定時で帰りたい事務の人の、AI手帳","案2：AIが苦手でも使える、仕事の時短メモ","案3：手を動かす前にAIに聞く仕事術","迷ったら案1。誰の何かが1文で分かる"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c007","cat":"アカウント設計","title":"名前とアイコンの方向","hook":"覚えてもらえる名前の案が並ぶ","ask":"［コンセプトの1文］に合うアカウント名を5案と、アイコンの絵の方向を2つ。呼びやすさと覚えやすさも一言ずつ。","result":{"kind":"list","title":"名前とアイコンの案","lines":["名前：じかんメモの［名前］","名前：定時帰りの事務さん","…ほか3案（呼びやすさつき）","アイコン：手帳を持つ人を水色で","アイコン：丸の中に小さな時計"]},"weight":"軽め","level":"はじめて","tags":["idea","make"]},{"id":"c008","cat":"アカウント設計","title":"最初の10投稿の方針","hook":"はじめの10本で何の人か伝わる","ask":"［コンセプトの1文］で始めます。最初の10本で何を伝えるか、順番と型を表にして。1本目は自己紹介で。投稿はしないで。","result":{"kind":"table","title":"最初の10本の方針","lines":["1本目｜自己紹介｜何の人か","2本目｜手順｜一番伝えたい技","3本目｜体験談｜始めたきっかけ","…10本目まで｜手順と体験を交互に"]},"weight":"ふつう","level":"はじめて","tags":["org","idea"]},{"id":"c009","cat":"アカウント設計","title":"やらない事を決める","hook":"ぶれずに続けられる線が引ける","ask":"［コンセプトの1文］から、発信でやらない事を5つ決めて。理由も一言ずつ。迷った時に見返せる形で。","result":{"kind":"list","title":"やらない事5つ","lines":["人の投稿を悪く言わない","分野の外の話を毎日は書かない","できない約束はしない","…ほか2つ（理由つき）","迷ったら、このメモに戻ってください"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c010","cat":"アカウント設計","title":"3か月の小さな目標","hook":"続けるための目印ができる","ask":"発信を始めます。使える時間は［平日30分］。3か月で目指す小さな目標を、月ごとに表にして。数を追いすぎない物で。","result":{"kind":"table","title":"3か月の目標","lines":["1か月目｜20本出して、型を3つ試す","2か月目｜反応のよい型を見つける","3か月目｜noteを1本出す","毎週｜15分だけふり返る"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c011","cat":"リサーチ","title":"お手本の投稿をほどく","hook":"うまい理由が3つに分かる","ask":"［気になった投稿を貼る］。なぜ読まれるのか、1行目・並べ方・締めの3点でほどいて。丸写しの案は出さないで。","result":{"kind":"list","title":"読まれる理由3つ","lines":["1行目：数字で「自分ごと」にしている","並べ方：手順が3つで短い","締め：「まず1つ」で背中を押す","まねる所：数字を1行目に入れる"]},"weight":"軽め","level":"はじめて","tags":["learn"]},{"id":"c012","cat":"リサーチ","title":"読者の悩みを集める","hook":"書くべき事が悩みから見える","ask":"［会社員がAIを仕事で使う時］の悩みを、ネットの質問や声から20個集めて、似た物ごとに分けて。","result":{"kind":"list","title":"よくある悩み（20個）","lines":["何を頼めばいいか分からない（6件）","会社で使っていいか不安（5件）","答えが合っているか心配（4件）","…ほか5件","多い順に、ネタにするのがおすすめ"]},"weight":"ふつう","level":"はじめて","tags":["learn","idea"]},{"id":"c013","cat":"リサーチ","title":"伸びている投稿を表に","hook":"同じ分野の当たりの型が並ぶ","ask":"［AI活用］の分野で最近反応の多いThreads投稿を10本調べ、1行目の型・長さを表にして。丸写しはしないで。","result":{"kind":"table","title":"伸びている投稿10本","lines":["1本目｜問いかけ｜短め","2本目｜手順3つ｜長め","3本目｜失敗談｜ふつう","多い型｜手順を数で見せる物"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c014","cat":"リサーチ","title":"人気noteの題名の型","hook":"読まれる記事の入口が分かる","ask":"［仕事術］の分野でよく読まれているnoteを調べて、題名と書き出しの型を3つにまとめて。丸写しはしないで。","result":{"kind":"list","title":"よく読まれる題名の型","lines":["① 「〇〇な人へ」と読む人を名指し","② 手順の数を出す（3つの手順 等）","③ やめた事・失敗から入る","型だけ借りて、中身は自分の話で"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c015","cat":"リサーチ","title":"気になる人の発信の流れ","hook":"投稿からnoteへの道すじが見える","ask":"［気になる人のThreadsのページ］を見て、投稿・固定投稿・noteがどうつながっているか、流れを順に書いて。","result":{"kind":"list","title":"発信の流れ","lines":["① 毎日：手順の短い投稿","② 週1：体験談の長めの投稿","③ 固定投稿：はじめての人向けのまとめ","④ そこから無料note→有料note","まねる所：週1の体験談"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c016","cat":"リサーチ","title":"まだ少ない話題を探す","hook":"人が書いていない所が分かる","ask":"［AI活用］の発信で、よく書かれている話題と、悩みは多いのに書く人が少ない話題を表にして。","result":{"kind":"table","title":"多い話題・少ない話題","lines":["多い｜文章を書かせる使い方","多い｜便利な道具の紹介","少ない｜会社で使う時の気をつけ方","少ない｜失敗した時の直し方","狙い目｜気をつけ方を手順で"]},"weight":"ふつう","level":"慣れたら","tags":["learn","idea"]},{"id":"c017","cat":"リサーチ","title":"言葉の探され方","hook":"読まれやすい言葉が分かる","ask":"［議事録 AI］［会議 時短］など、私の記事に近い言葉がどのくらい探されているか調べて表に。似た言葉も挙げて。","result":{"kind":"table","title":"言葉の探され方","lines":["議事録 AI｜多め｜関心が高い","会議 時短｜ふつう｜昔から安定","議事録 書き方｜多め｜初心者向け","題名に入れるなら｜「議事録」を先に"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c018","cat":"リサーチ","title":"同じ分野noteの比べ表","hook":"値段と中身の相場が分かる","ask":"［AIで仕事の時短］の有料noteを5本調べ、値段の帯・章の数・誰向けかを表にして。買わないで。","result":{"kind":"table","title":"同じ分野noteの比べ","lines":["A｜ワンコイン台｜5章｜事務の人向け","B｜高め｜12章｜管理職向け","C｜ワンコイン台｜3章｜はじめての人","空いている所｜手順を細かく見せる物"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c019","cat":"リサーチ","title":"紹介する道具の下調べ","hook":"使う前に向き不向きが分かる","ask":"［無料のメモアプリ］を3つ調べて、できる事・向いている人・気をつける点を表にして。登録はしないで。","result":{"kind":"table","title":"メモアプリの比べ","lines":["A｜手書きが得意｜手帳好き向け","B｜検索が速い｜メモが多い人向け","C｜共有しやすい｜家族と使う人向け","気をつける点｜無料の範囲を確かめる"]},"weight":"ふつう","level":"はじめて","tags":["learn"]},{"id":"c020","cat":"リサーチ","title":"書く前の事実確かめ","hook":"うろ覚えの数字を出さない","ask":"［投稿の下書きを貼る］。数字や事実の所に印をつけて、確かめた出どころと、合っているかを表にして。","result":{"kind":"table","title":"事実の確かめ","lines":["「1日に平均〇分」｜出どころ不明｜削る","「〇年から始まった」｜公式で確認｜合う","「みんな使っている」｜言いすぎ｜直す","まとめ｜直すのは2か所"]},"weight":"軽め","level":"はじめて","tags":["learn"]},{"id":"c021","cat":"ネタ出し","title":"投稿ネタを10個","hook":"考えるのが苦手でも並ぶ","ask":"私は［会社員で手帳好き］。［仕事の時短］で発信したいので、Threadsの投稿ネタを10個、短い題で出して。","result":{"kind":"list","title":"仕事の時短ネタ10個","lines":["メールを2分で返す型","会議の前日にやる1つ","やめて楽になった仕事3つ","朝イチ15分の段取り","…ほか6個"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c022","cat":"ネタ出し","title":"小さな工夫を聞き出す","hook":"自分では普通の事がネタに","ask":"私に10個質問して、［仕事や暮らし］の小さな工夫を聞き出して。答えから投稿のネタを5個まとめて。","result":{"kind":"chat","title":"棚おろしの質問","lines":["1問目：毎朝、最初にする事は？","2問目：最近やめて楽になった事は？","…10問まで、1問ずつ聞きます","答えをもとにネタを5個まとめます"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c023","cat":"ネタ出し","title":"よくある質問をネタに","hook":"聞かれた事がそのまま種","ask":"［届いた質問や相談を貼る］。似た物をまとめて、答える形の投稿ネタを5個に。","result":{"kind":"list","title":"質問から作ったネタ","lines":["「何から始める？」→最初の1週間の話","「続かない」→3日で止まった時の戻り方","「時間がない」→すきま10分の使い方","…ほか2個"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c024","cat":"ネタ出し","title":"読む人の1日からネタ","hook":"朝・昼・夜の困り事が並ぶ","ask":"読む人は［子育て中の会社員］。その人の平日の朝・昼・夜で困りそうな事と、合う投稿ネタを表にして。","result":{"kind":"table","title":"1日の場面とネタ","lines":["朝｜支度で手いっぱい｜5分の段取り","昼｜休みが短い｜昼休みに読む本","夜｜疲れて書けない｜10分だけ書く型","おすすめ｜夜のネタから試す"]},"weight":"ふつう","level":"はじめて","tags":["idea"]},{"id":"c025","cat":"ネタ出し","title":"本の要点を発信の種に","hook":"読んだ本がネタに変わる","ask":"［本の題］の要点を5つと、そこから作れる投稿のネタを2つ。分からない所は分からないと言って。","result":{"kind":"list","title":"要点とネタ","lines":["要点1：小さく始めると続きやすい","要点2：時間と場所を決めておく","…要点3〜5","ネタ：「5分だけ」で始めた仕事の話","ネタ：机の上を朝だけ片づける"]},"weight":"軽め","level":"はじめて","tags":["learn","idea"]},{"id":"c026","cat":"ネタ出し","title":"1つのネタを5通りに","hook":"1つの話で5本書ける","ask":"［朝15分の片づけ］のネタを、手順・失敗談・比べる・問いかけ・まとめの5通りの切り口にして。","result":{"kind":"list","title":"5通りの切り口","lines":["手順：机の上を3つに分けるだけ","失敗談：一気に捨てて後悔した日","比べる：片づける前と後の朝","問いかけ：机の上、何個ありますか？","まとめ：続いた工夫を3つ"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c027","cat":"ネタ出し","title":"よくある常識の逆から","hook":"「実は」から始まるネタ","ask":"［仕事術］でよく言われる事を5つ挙げて、それぞれ「実はこうだった」と言える切り口を出して。言いすぎないで。","result":{"kind":"table","title":"常識の逆の切り口","lines":["朝型がよい｜夜15分の方が続いた","メモは細かく｜決まった事だけで足りた","すぐ返信｜まとめて返す方が速い","ほか｜2つ（全部で5つ）"]},"weight":"ふつう","level":"慣れたら","tags":["idea"]},{"id":"c028","cat":"ネタ出し","title":"来月の話題カレンダー","hook":"季節に合うネタを先に押さえる","ask":"［12月］に会社員の間で話題になりそうな事を調べて、時期と、［仕事の時短］の発信につなぐ切り口を表にして。","result":{"kind":"table","title":"12月の話題カレンダー","lines":["上旬｜年末の書類の締め｜早く終える段取り","中旬｜忘年会の幹事｜連絡の型","下旬｜仕事納め｜1年のふり返り","年明け｜新年の目標｜手帳とAIの使い方"]},"weight":"ふつう","level":"はじめて","tags":["idea","learn"]},{"id":"c029","cat":"ネタ出し","title":"過去投稿の生かし先","hook":"埋もれた投稿がまた働く","ask":"［過去の投稿を貼る］。反応のよかった物から、言い直して再投稿・noteにまとめる・図解にする候補を選んで。","result":{"kind":"table","title":"生かし先の候補","lines":["朝の段取り｜図解4枚にする","会議の短くし方｜noteの1章に","メールの型｜言い直して再投稿","迷ったら｜図解から試すのが軽め"]},"weight":"ふつう","level":"慣れたら","tags":["idea","org"]},{"id":"c030","cat":"ネタ出し","title":"30日の投稿予定表","hook":"何を出すか毎日迷わない","ask":"［仕事の時短］の発信で、30日分の題と型を表にして。同じ型が続かないように。投稿はしないで。","result":{"kind":"table","title":"30日の投稿予定","lines":["1日目｜朝の段取り15分｜手順","2日目｜やめた仕事3つ｜まとめ","3日目｜失敗した時間割｜体験","…30日目まで｜型は5種を順に"]},"weight":"ふつう","level":"慣れたら","tags":["org","idea"]},{"id":"c031","cat":"投稿","title":"投稿の下書き3案","hook":"書き出し違いの3本から選ぶ","ask":"［会議を短くするコツ］で、書き出しを変えたThreadsの下書きを3案。投稿はしないで。","result":{"kind":"doc","title":"下書き3案","lines":["案1「会議、30分を15分にしました」","案2「議題を前日に送るだけで変わる」","案3「長い会議の原因は、だいたい1つ」","自分の言葉に直してから使ってください"]},"weight":"軽め","level":"はじめて","tags":["idea","time"]},{"id":"c032","cat":"投稿","title":"メモを投稿の形に","hook":"走り書きが読める文になる","ask":"［スマホのメモを貼る］を、Threadsの投稿の形に整えて。私の言い回しは残して。投稿はしないで。","result":{"kind":"doc","title":"整えた投稿","lines":["本を1冊読み切れたのは、半年ぶり。","コツは「1日5ページだけ」にした事。","読めない日は、表紙を開くだけでOK。","…（メモの言葉をそのまま生かしています）"]},"weight":"軽め","level":"はじめて","tags":["time"]},{"id":"c033","cat":"投稿","title":"話に合う型を選ぶ","hook":"同じ中身でも届き方が変わる","ask":"［投稿のネタか下書きを貼る］。手順・体験談・問いかけのうち、この話に合う型と、その型での並べ方を教えて。","result":{"kind":"table","title":"型の向き不向き","lines":["手順｜◎ 手順が3つあり向いている","体験談｜○ 失敗の話を足せば使える","問いかけ｜△ 答えが1つに決まる","並べ方｜結論→手順3つ→締めの一言"]},"weight":"軽め","level":"はじめて","tags":["learn","idea"]},{"id":"c034","cat":"投稿","title":"書き出しの1行を直す","hook":"指が止まる1行目に変わる","ask":"［投稿の下書きを貼る］。1行目だけを、続きを読みたくなる形に5案。本文は変えないで。","result":{"kind":"list","title":"1行目の直し5案","lines":["前：朝の時間を見直しました","案1：朝15分で、1日が軽くなった話","案2：朝イチにメールを開くのをやめた","…ほか3案","本文はそのまま。1行目だけ替えて"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c035","cat":"投稿","title":"締めの1行を3案","hook":"読んだ後の一歩が決まる","ask":"［投稿の下書きを貼る］。最後の1行を3案。保存したくなる・試したくなる・返事したくなる、で書き分けて。","result":{"kind":"list","title":"締めの1行3案","lines":["保存：あとで見返せるよう保存どうぞ","試す：明日の朝、1つだけやってみて","返事：あなたの朝の工夫も教えて","押しつけない言い方にしています"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c036","cat":"投稿","title":"長い文を500字以内に","hook":"言いたい事を残して削る","ask":"［長くなった投稿を貼る］。500字以内に縮めて。言いたい事は残し、削った所も教えて。投稿はしないで。","result":{"kind":"doc","title":"短くした投稿","lines":["元：820字 → 直し：470字","削った所：前置きの3行","削った所：同じ例の2つ目","残した所：手順3つと最後の一言"]},"weight":"軽め","level":"はじめて","tags":["time"]},{"id":"c037","cat":"投稿","title":"読みやすい改行に","hook":"スマホでつまらず読める","ask":"［投稿の下書きを貼る］。スマホで読みやすいように、改行と空き行の位置だけ直して。言葉は変えないで。","result":{"kind":"doc","title":"改行を整えた投稿","lines":["1文ごとに改行","話が変わる所に空き行を1つ","手順は1行に1つ","言葉は1文字も変えていません"]},"weight":"軽め","level":"はじめて","tags":["time"]},{"id":"c038","cat":"投稿","title":"言い回しの点検","hook":"きつい・言いすぎに気づける","ask":"［投稿の下書きを貼る］。上から目線・言い切りすぎ・誤解されそうな所に印をつけて、直し案を表にして。","result":{"kind":"table","title":"言い回しの点検","lines":["「〜すべき」｜きつい｜「〜すると楽」","「絶対に変わる」｜言いすぎ｜「変わった」","「みんな知らない」｜決めつけ｜「意外と」","全体｜やさしい口調で読みやすい"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c039","cat":"投稿","title":"連投5本の組み立て","hook":"1本目から最後まで流れる","ask":"［片づけの習慣］で5本の連投にしたい。各投稿で言う事を1行ずつ、つながる順に並べて。文は私が書きます。","result":{"kind":"table","title":"連投5本の流れ","lines":["1本目｜机の上が散らかる理由","2本目｜まず捨てる物は1つだけ","3本目｜置き場所を決めるコツ","4本目｜続けるための朝3分","5本目｜まとめと「保存してね」"]},"weight":"ふつう","level":"慣れたら","tags":["org","idea"]},{"id":"c040","cat":"投稿","title":"返信の案を出す","hook":"返す言葉に迷う時間が減る","ask":"［届いたコメントと元の投稿を貼る］。それぞれに短い返信の案を2つずつ。返信は私がします。","result":{"kind":"chat","title":"返信の案","lines":["「早速試します！」への返信","案1：うれしいです。合わなければ教えて","案2：ありがとう。続きも書きますね","返すのはご自分で。言い回しは自由に"]},"weight":"軽め","level":"はじめて","tags":["time"]},{"id":"c041","cat":"note","title":"noteの題名を10案","hook":"読む人の得が伝わる題に","ask":"［AIで議事録を時短する方法］のnoteの題名を10案。読む人の得が分かる物を。大げさな言葉は使わないで。","result":{"kind":"list","title":"題名の案（10個から）","lines":["会議メモが5分で議事録になる手順","議事録が苦手な人のAIの頼み方","…ほか8案","おすすめは1つ目。中身と合っている"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c042","cat":"note","title":"記事の目次づくり","hook":"書く前に全体の地図ができる","ask":"［読書メモを仕事に生かす］noteを書きます。読む人は［本が続かない会社員］。見出し5つの目次と、各章で言う事を1行ずつ。","result":{"kind":"doc","title":"記事の目次案","lines":["1. 本を読んでも忘れてしまう理由","2. 読みながら1行だけ書く","3. 書いた1行を仕事で試す","4. 続かない時の立て直し方","5. 今夜の1冊で試す事"]},"weight":"軽め","level":"はじめて","tags":["org","idea"]},{"id":"c043","cat":"note","title":"体験メモを章に並べる","hook":"散らばった話が記事の順に","ask":"［思いつくまま書いたメモを貼る］。noteの章の順に並べ替えて、足りない話があれば教えて。文は直さないで。","result":{"kind":"list","title":"並べ替えた順番","lines":["1章：始めたきっかけ（メモ3つ）","2章：やってみた手順（メモ5つ）","3章：うまくいかなかった事（2つ）","足りない話：今の結果と次の一歩"]},"weight":"ふつう","level":"慣れたら","tags":["org"]},{"id":"c044","cat":"note","title":"書き出しを3案","hook":"最初の3行で読む気が出る","ask":"［目次を貼る］のnoteの、書き出し3〜5行を3案。共感から・結論から・問いから、で書き分けて。","result":{"kind":"doc","title":"書き出し3案","lines":["共感：机の上が、いつも書類の山だった","結論：朝3分の片づけで探し物が消えた","問い：探し物に、1日何分使ってますか","合う物を選び、自分の体験を足して"]},"weight":"軽め","level":"はじめて","tags":["idea","time"]},{"id":"c045","cat":"note","title":"見出しごとの下書き","hook":"1章ずつなら重くない","ask":"［目次を貼る］の2章だけ、800字ほどで下書きして。話し方は［です・ます、短い文］で。公開はしないで。","result":{"kind":"doc","title":"2章の下書き","lines":["■読みながら1行だけ書く","本を閉じる前に、1行だけ書きます。","…（約800字）","言い回しは自分の言葉に直してください"]},"weight":"ふつう","level":"慣れたら","tags":["time"]},{"id":"c046","cat":"note","title":"たとえ話を足す","hook":"かたい説明がすっと入る","ask":"［分かりにくい段落を貼る］。身近なたとえを3つ出して、入れる場所も教えて。本文の書き直しはしないで。","result":{"kind":"list","title":"たとえ話3案","lines":["冷蔵庫の整理：使う物を手前に","料理の下ごしらえ：先に切っておく","駅の乗り換え：近い出口を覚えておく","入れる所：3段落目の説明の後"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c047","cat":"note","title":"読みにくい所の点検","hook":"直す場所に印がつく","ask":"［下書きを貼る］。長すぎる文・分かりにくい言葉・くり返しに印をつけて、直し案を。全文は書き直さないで。","result":{"kind":"table","title":"読みにくい所","lines":["3段落目｜1文が長い｜2つに分ける","「工数」｜分かりにくい｜「手間」に","5段落目｜2段落目と同じ話｜削る","まとめ｜直すのは3か所だけでOK"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c048","cat":"note","title":"記事の要点を3行で","hook":"冒頭の「この記事で分かる事」","ask":"［noteの下書きを貼る］。冒頭に置く「この記事で分かる事」を3行で。言いすぎない言葉で。","result":{"kind":"doc","title":"この記事で分かる事","lines":["・本を読んでも忘れてしまう理由","・読みながら1行だけ書くコツ","・書いた1行を仕事で試す方法"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c049","cat":"note","title":"記事の最後の案内文","hook":"押し売りせずに次へつなぐ","ask":"［記事の要点を貼る］。読み終えた人へ、Threadsや次の記事を案内する締めの文を3案。押し売り感なしで。","result":{"kind":"doc","title":"締めの文3案","lines":["案1：明日の会議で、1つだけ試してみて","案2：続きの話はThreadsで毎日書いてます","案3：次は「メールの時短」をまとめます","どれも読む人の一歩で終えています"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c050","cat":"note","title":"過去のnoteの手直し","hook":"古い記事が今の読者に届く","ask":"［過去のnoteのリンク］を読んで、今の読者向けに直す所を5つ挙げて。直すのは私が見てから。","result":{"kind":"list","title":"直すとよい所","lines":["1. 題名に「誰向けか」を入れる","2. 書き出しを今の悩みに合わせる","3. 古い画面の説明を差し替える","4〜5. 見出しを短く・締めに次の記事","まず1と2だけでも十分です"]},"weight":"ふつう","level":"慣れたら","tags":["org"]},{"id":"c051","cat":"画像・図解","title":"絵の決まりを作る","hook":"毎回の絵がそろって見える","ask":"これから作る絵の決まりを作って覚えて。［薄い水色・やさしい線・文字は少なめ］。次からは毎回これに合わせて。","result":{"kind":"doc","title":"絵の決まり","lines":["色：薄い水色を主に、白と灰色だけ","線：太さは同じ、角は丸く","文字：1枚に1行まで","覚えました。次から合わせて作ります"]},"weight":"軽め","level":"はじめて","tags":["make","org"]},{"id":"c052","cat":"画像・図解","title":"Threadsに添える絵","hook":"文字入れ前の絵がすぐできる","ask":"［朝のコーヒーと手帳］の絵を、やわらかい水色で1枚。Threadsの投稿に添えます。文字は入れないで。","result":{"kind":"image","title":"朝の机の絵","lines":["木の机に、湯気の立つコーヒー","開いた手帳とペンが1本","窓からの光で、全体が薄い水色","上の方に文字を置ける余白あり"]},"weight":"重め","level":"はじめて","tags":["make"]},{"id":"c053","cat":"画像・図解","title":"アイコンの絵","hook":"顔を出さずに覚えてもらえる","ask":"Threadsとnoteで使うアイコンを作って。［パソコンを持つ人］を、やさしい線と薄い水色で。丸く切っても分かる形に。","result":{"kind":"image","title":"アイコンの案","lines":["パソコンを抱えた人の上半身","顔は描きこまず、やさしい線だけ","背景は薄い水色の無地","丸く切っても形がくずれない"]},"weight":"重め","level":"はじめて","tags":["make"]},{"id":"c054","cat":"画像・図解","title":"文章を図解4枚に","hook":"4枚の絵の中身が決まる","ask":"［投稿の文を貼る］を4枚の図解にする案を作って。1枚ごとに見出しと、描く物を書いて。","result":{"kind":"list","title":"図解4枚の設計","lines":["1枚目：「会議が15分で終わる」＋時計","2枚目：手順3つ＋矢印","3枚目：やりがちな失敗＋×印","4枚目：まとめ＋「保存してね」"]},"weight":"軽め","level":"はじめて","tags":["make","idea"]},{"id":"c055","cat":"画像・図解","title":"手順を流れ図に","hook":"やる順番が矢印で見える","ask":"［本を読んで投稿にする手順］を、上から下へ流れる図にして。4段まで、1段に一言だけ。","result":{"kind":"image","title":"読書から投稿の流れ","lines":["1段目：読みながら1行メモ","2段目：メモをAIに貼る","3段目：投稿の形を自分で直す","4段目：投稿する（自分で）"]},"weight":"重め","level":"はじめて","tags":["make","org"]},{"id":"c056","cat":"画像・図解","title":"noteの見出し画像","hook":"記事の顔がすぐできる","ask":"［朝の片づけ習慣］のnoteの見出し画像を、横長で1枚。薄い水色で、題名を入れる余白を残して。","result":{"kind":"image","title":"片づけnoteの見出し","lines":["すっきりした机に、小さな鉢植え","全体は薄い水色で落ち着いた雰囲気","右側に題名を置ける広い余白","スマホで小さく見ても形が分かる"]},"weight":"重め","level":"はじめて","tags":["make"]},{"id":"c057","cat":"画像・図解","title":"記事の中の図解","hook":"長い説明が1枚で伝わる","ask":"noteの［2章：メモの取り方］の中身を、1枚の図にして。箱と矢印で、文字は少なめに。","result":{"kind":"image","title":"メモの取り方の図","lines":["左：会議中のメモ（決まった事だけ）","真ん中：AIに渡す矢印","右：整った議事録","下に一言「書くのは3項目だけ」"]},"weight":"重め","level":"慣れたら","tags":["make"]},{"id":"c058","cat":"画像・図解","title":"数字を見やすい絵に","hook":"表がひと目で伝わる絵になる","ask":"［前と後の数字を貼る］を、Threadsに載せる見やすい棒グラフの絵にして。色は2色まで、数字は大きく。","result":{"kind":"image","title":"前と後の棒グラフ","lines":["左の棒：前（灰色）","右の棒：後（水色）で短く","上に大きく「会議の時間」","数字は棒の上に大きく"]},"weight":"重め","level":"慣れたら","tags":["make"]},{"id":"c059","cat":"画像・図解","title":"noteのヘッダー画像","hook":"ページを開いた時の印象が整う","ask":"noteの自分のページの上に置く、横長の画像を作って。［仕事の時短とAI］が伝わる絵で、色は［薄い水色と白］。","result":{"kind":"image","title":"ページの上の画像","lines":["左から右へ、手帳・時計・パソコン","色は薄い水色と白の2色だけ","真ん中は空けて、文字を置ける","アイコンと同じ線の太さ"]},"weight":"重め","level":"慣れたら","tags":["make"]},{"id":"c060","cat":"画像・図解","title":"連載の見出しをそろえる","hook":"続き物だと一目で分かる","ask":"3回の連載noteの見出し画像を、同じ形で番号だけ変えて3枚。色は［薄い水色］の濃さ違いで。","result":{"kind":"image","title":"連載の見出し3枚","lines":["同じ机の絵で、3枚とも同じ配置","左上に大きく①②③の番号","水色の濃さが回ごとに少し変わる","題名を入れる余白は同じ位置"]},"weight":"重め","level":"慣れたら","tags":["make","org"]},{"id":"c061","cat":"導線づくり","title":"プロフィール文3案","hook":"何の人か一目で伝わる","ask":"私は［事務10年・AIで時短中］。Threadsのプロフィール文を、読む人の得が伝わる形で短く3案。","result":{"kind":"doc","title":"プロフィール3案","lines":["案1：事務10年。AIで残業を減らす記録","案2：定時で帰る人の、AIの使い方メモ","案3：手を動かす前にAIに聞く会社員","迷ったら案2。読む人の得が先に来る"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c062","cat":"導線づくり","title":"固定投稿の中身を決める","hook":"初めての人が迷わず読める","ask":"私の発信は［AIで仕事の時短］。初めて来た人向けの固定投稿に入れる事を、順番に並べて。文は私が書きます。","result":{"kind":"list","title":"固定投稿に入れる物","lines":["1. 何の人か（1行で）","2. ここで分かる事を3つ","3. 人気の投稿へのつなぎ","4. noteの案内（押し売りなし）"]},"weight":"軽め","level":"はじめて","tags":["org","idea"]},{"id":"c063","cat":"導線づくり","title":"自己紹介noteの骨組み","hook":"何の人かが1本で伝わる","ask":"私は［事務8年・AIで時短中・読書好き］。自己紹介noteの見出しと、各章で書く事を1行ずつ。文は私が書きます。","result":{"kind":"doc","title":"自己紹介noteの骨組み","lines":["1. はじめまして：何を発信している人か","2. 前は残業ばかりだった話","3. AIで変わった事・変わらない事","4. ここで読める事と、おすすめ3本"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c064","cat":"導線づくり","title":"リンク集のページ","hook":"プロフィールの1か所にまとまる","ask":"Threads・note・オープンチャットへのリンクを1枚にまとめたページを作って。色は［薄い水色］。公開はしないで。","result":{"kind":"site","title":"リンク集","lines":["仕事の時短メモのリンク集","ボタン：Threads（毎日の投稿）","ボタン：note（手順をまとめた記事）","ボタン：オープンチャット","下に一言：どれからでもどうぞ"]},"weight":"ふつう","level":"はじめて","tags":["make","org"]},{"id":"c065","cat":"導線づくり","title":"noteを知らせる投稿","hook":"売り込まずに読みたくなる","ask":"［noteの題と要点］から、Threadsでnoteを知らせる投稿の案を3つ。売り込み感は出さないで。投稿はしないで。","result":{"kind":"doc","title":"知らせる投稿3案","lines":["案1：本が続かなかった頃の話から","案2：よく聞かれる質問の答えとして","案3：手順を1つだけ先に見せる","リンクは最後に1回だけ"]},"weight":"ふつう","level":"慣れたら","tags":["idea"]},{"id":"c066","cat":"導線づくり","title":"記事の棚分け","hook":"読む人が続きを探しやすい","ask":"［noteの記事の題を貼る］。似た物をまとめて、マガジンの分け方と名前を3つまで出して。","result":{"kind":"table","title":"マガジンの分け方","lines":["朝の時短｜片づけ・段取りの4本","読書と学び｜読書メモの3本","AIの頼み方｜例文つきの5本","入れにくい1本｜自己紹介に回す"]},"weight":"軽め","level":"慣れたら","tags":["org"]},{"id":"c067","cat":"導線づくり","title":"はじめての人向けページ","hook":"何から読めばいいか迷わない","ask":"［おすすめの投稿とnoteのリンクを貼る］で、初めての人が読む順番を並べたページを作って。公開はしないで。","result":{"kind":"site","title":"はじめての方へ","lines":["はじめての方へ：まずはこの3本から","① 何の人か分かる自己紹介note","② 一番読まれた手順の投稿","③ 続きが読めるオープンチャット"]},"weight":"ふつう","level":"慣れたら","tags":["org","make"]},{"id":"c068","cat":"導線づくり","title":"無料の配り物の案","hook":"受け取りたくなる物が決まる","ask":"［AIで仕事の時短］の発信で、無料で配れる物の案を5つ。作る手間の大小も。","result":{"kind":"table","title":"配り物の案","lines":["頼み方の例文集｜手間 小","1週間の時短表｜手間 小","メールの型10個｜手間 中","図解の手順書｜手間 大","まずは｜例文集から"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c069","cat":"導線づくり","title":"配り物の受け取りページ","hook":"中身が分かって受け取りやすい","ask":"［無料の配り物の中身］を紹介する1枚のページを作って。何が入っているか・誰向けか・受け取り方を。公開はしないで。","result":{"kind":"site","title":"受け取りページ","lines":["頼み方の例文集（無料）","部品：こんな人向け（3行）","部品：中身の見本を1つ","部品：受け取り方の手順","部品：よくある質問を2つ"]},"weight":"ふつう","level":"慣れたら","tags":["make"]},{"id":"c070","cat":"導線づくり","title":"オプチャの案内文","hook":"入る前の不安がなくなる","ask":"私の［オープンチャット］の案内文を作って。何がもらえるか・どんな場か・入り方を短く。押しつけない言い方で。","result":{"kind":"doc","title":"オープンチャットの案内","lines":["仕事の時短を、ゆるく話す部屋です。","毎週、使える頼み方を1つ置いています。","名前だけで入れます。見るだけでもOK。","入り方：プロフィールのリンクから"]},"weight":"軽め","level":"はじめて","tags":["org","idea"]},{"id":"c071","cat":"商品づくり","title":"誰の何を解く物か","hook":"作る前に一言で言える","ask":"［有料noteの案を貼る］。誰の・どんな困り事を・どう解く物か、1文にまとめて3案。","result":{"kind":"doc","title":"この記事を一言で","lines":["案1：本が続かない人の、読み方の型","案2：買って積むだけの人に、5分の読書","案3：読んだ事を仕事で使えるようにする","読む人がはっきりするのは案1"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c072","cat":"商品づくり","title":"有料noteの企画","hook":"書く前に中身と順番が決まる","ask":"［読書メモを仕事に生かす］で有料noteを作りたい。誰向け・読み終えて何ができるか・章立ての案を出して。","result":{"kind":"doc","title":"有料noteの企画案","lines":["誰向け：本を買うが続かない会社員","読み終えると：1冊を仕事で使える","章立て：理由→読み方→書き方→使い方","無料の記事と、中身が重ならない形に"]},"weight":"ふつう","level":"慣れたら","tags":["idea","org"]},{"id":"c073","cat":"商品づくり","title":"有料と無料の切り所","hook":"どこから有料にするか迷わない","ask":"［記事の下書きを貼る］。無料で見せる所と、有料にする所の切り目を3案、理由つきで出して。","result":{"kind":"list","title":"切り所3案","lines":["案1：手順の前で切る（中身が見える）","案2：失敗例の後で切る（共感が先）","案3：頼み方の例文から有料に","おすすめ：案1。無料でも役に立つ"]},"weight":"ふつう","level":"慣れたら","tags":["org","idea"]},{"id":"c074","cat":"商品づくり","title":"特典の案を出す","hook":"本文を助けるおまけが決まる","ask":"［有料noteの目次を貼る］。読んだ後すぐ使える特典の案を5つ。作る手間の小さい順に。","result":{"kind":"list","title":"特典の案","lines":["① 頼み方の例文をまとめた1枚","② 1週間のやる事チェック表","③ 本文の図解をまとめた1枚","…ほか2つ","本文の続きで使える物を選んでいます"]},"weight":"ふつう","level":"慣れたら","tags":["idea","make"]},{"id":"c075","cat":"商品づくり","title":"値付けの考え方","hook":"安すぎ・高すぎを避ける","ask":"［目次と文字数を貼る］。同じ分野の相場と中身の量から、ワンコイン台か高めか、考え方を教えて。金額は決めないで。","result":{"kind":"list","title":"値付けの考え方","lines":["中身：5章・手順と例文つき","相場：同じ分野はワンコイン台が多い","高めにするなら：特典と例文を厚く","最初の1本は、手に取りやすさ優先"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c076","cat":"商品づくり","title":"有料noteの紹介文","hook":"誰の何に効くかが伝わる","ask":"［目次と企画を貼る］。有料noteの冒頭に置く紹介文を作って。大げさな言葉は使わないで。公開はしないで。","result":{"kind":"doc","title":"紹介文の案","lines":["本を読んでも、仕事で使えていない人へ。","読みながら1行書くだけの方法です。","5章で、手順と例文をまとめました。","合わない人：速く読む方法を知りたい人"]},"weight":"ふつう","level":"はじめて","tags":["idea"]},{"id":"c077","cat":"商品づくり","title":"よくある質問を作る","hook":"買う前の迷いに先に答える","ask":"［有料noteの紹介文を貼る］。買う前に聞かれそうな質問を5つと、短い答えの案を出して。","result":{"kind":"table","title":"よくある質問","lines":["はじめてでも読める？｜1章から順に","スマホだけでできる？｜できます","どのくらいで読める？｜30分ほど","ほか｜2つ（全部で5問）"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c078","cat":"商品づくり","title":"買った人へのお礼","hook":"買った後も気持ちよく読める","ask":"［読書の有料note］を買ってくれた人へ、本文の最初に置くお礼と読み方の案内を3行で。","result":{"kind":"doc","title":"お礼と読み方","lines":["お読みいただき、ありがとうございます。","1章だけでも、明日から使えます。","分からない所はコメントでどうぞ。"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c079","cat":"商品づくり","title":"感想の集め方","hook":"読んだ人の声が自然に届く","ask":"［読書の有料note］を読んだ人に感想を聞きたい。答えやすい質問3つと、記事の最後に置くお願いの文を作って。","result":{"kind":"doc","title":"感想のお願い","lines":["Q1. 一番役に立った章は？","Q2. 分かりにくかった所は？","Q3. 次に読みたい話は？","「一言だけでもうれしいです」で締め"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c080","cat":"商品づくり","title":"次回作の種を探す","hook":"感想と質問から次が決まる","ask":"［感想・質問・反応のよかった投稿を貼る］。次の有料noteの種を3つ、理由つきで。","result":{"kind":"list","title":"次回作の種3つ","lines":["① メールの時短：質問が一番多い","② 読書の続け方：感想で要望あり","③ 会議の準備：投稿の保存が多い","まずは①を無料の記事で試すのが軽め"]},"weight":"ふつう","level":"慣れたら","tags":["idea"]},{"id":"c081","cat":"数字を読む","title":"今週と先週を比べる","hook":"伸びた・落ちたが一目で","ask":"［今週と先週のThreadsとnoteの数字を貼る］。比べた表にして、上がった所と下がった所に印を。","result":{"kind":"table","title":"今週の数字","lines":["Threads 見られた数｜先週より↑","Threads フォロー｜ほぼ同じ","note 読まれた数｜先週より↑","note スキ｜少し↓","効いた投稿｜火曜の手順の回"]},"weight":"軽め","level":"はじめて","tags":["org","learn"]},{"id":"c082","cat":"数字を読む","title":"伸びた投稿の共通点","hook":"伸びた理由が言葉になる","ask":"［投稿の文と数字を貼る］。反応のよかった3本の共通点と、次に試す事を3つ教えて。","result":{"kind":"list","title":"伸びた3本の共通点","lines":["1行目が問いかけになっている","数字が入っている（3つ、5分など）","最後の1行で保存をすすめている","次の手：問いかけで始める投稿を3本"]},"weight":"軽め","level":"はじめて","tags":["learn"]},{"id":"c083","cat":"数字を読む","title":"落ちた理由の見立て","hook":"へこまずに次の手が出る","ask":"［反応が少なかった投稿と数字を貼る］。考えられる理由を3つと、次に変える所を1つ。責める言い方はしないで。","result":{"kind":"chat","title":"少なかった理由の見立て","lines":["1行目が長く、何の話か分かりにくい","出した時間が昼の忙しい時間","同じ話が3日続いていた","次に変える所：1行目を短く"]},"weight":"軽め","level":"はじめて","tags":["learn"]},{"id":"c084","cat":"数字を読む","title":"感想を仕分けて表に","hook":"次に書く事が感想から分かる","ask":"［noteの感想やコメントを貼る］。よかった点・分かりにくい点・もっと知りたい事に分けて、多い順に表にして。","result":{"kind":"table","title":"感想の仕分け","lines":["よかった点｜手順が具体的（8件）","分かりにくい｜頼み方の例が少ない","もっと知りたい｜メールの時短（5件）","次の記事｜メールの時短が有力"]},"weight":"軽め","level":"はじめて","tags":["org","learn"]},{"id":"c085","cat":"数字を読む","title":"目標との差を見る","hook":"あと何をすればいいか分かる","ask":"目標は［月20本投稿・note2本］。［今月の実績を貼る］。差と、残りの日数でできる量を表にして。","result":{"kind":"table","title":"目標との差","lines":["投稿｜目標20本｜今14本｜残り6本","note｜目標2本｜今1本｜残り1本","残り10日｜2日に1本で届く","無理なら｜noteは来月に回してOK"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c086","cat":"数字を読む","title":"反応の多い時間帯","hook":"いつ出すか迷わなくなる","ask":"［過去30本の投稿時間と数字を貼る］。反応の多い時間帯と少ない時間帯を表にして、試す時間を2つ出して。","result":{"kind":"table","title":"時間帯と反応","lines":["朝 7〜8時｜多め","昼 12時台｜ふつう","夜 21〜22時｜一番多い","試す時間｜夜21時と朝7時"]},"weight":"軽め","level":"はじめて","tags":["org","learn"]},{"id":"c087","cat":"数字を読む","title":"型ごとの成績表","hook":"自分に合う型が数字で分かる","ask":"［過去の投稿と数字を貼る］。手順・体験談・問いかけ・まとめの型に分けて、型ごとの平均を表にして。","result":{"kind":"table","title":"型ごとの成績","lines":["手順｜保存が多い","体験談｜返信が多い","問いかけ｜見られた数は多め","まとめ｜どれもふつう","合う型｜手順と体験談"]},"weight":"ふつう","level":"慣れたら","tags":["learn","org"]},{"id":"c088","cat":"数字を読む","title":"フォローが増えた日","hook":"増えた日の前に何があったか","ask":"［日ごとのフォロー数と、その日の投稿を貼る］。増えた日の前後に何を出していたか調べて、共通点を教えて。","result":{"kind":"list","title":"増えた日の共通点","lines":["増えた3日とも、前日に体験談","手順の投稿の日は増え方が小さい","返信を多くした日も少し増えた","次の手：体験談を週2回に"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c089","cat":"数字を読む","title":"noteの読まれ方","hook":"どの記事が入口か分かる","ask":"［noteの記事ごとの読まれた数とスキを貼る］。よく読まれる記事・スキが多い記事を表にして、気づきを2つ。","result":{"kind":"table","title":"記事ごとの読まれ方","lines":["朝の片づけ｜読まれた数が一番多い","読書メモ｜スキの割合が高い","議事録の時短｜検索から多め","気づき｜入口は片づけ、深いのは読書"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c090","cat":"数字を読む","title":"3か月の流れを見る","hook":"上向きか横ばいかが分かる","ask":"［3か月分の月ごとの数字を貼る］。伸びている物・止まっている物を表にして、来月に続ける事を1つ。","result":{"kind":"table","title":"3か月の流れ","lines":["見られた数｜毎月少しずつ↑","フォロー｜2か月目から横ばい","noteのスキ｜3か月目に↑","続ける事｜手順の投稿を週3回"]},"weight":"ふつう","level":"慣れたら","tags":["learn"]},{"id":"c091","cat":"自動でおまかせ","title":"夜に今日の一問","hook":"日々の小さな事がネタに残る","ask":"毎晩［22時］に「今日の小さな工夫は？」と1問だけ届けて。答えたら、ネタの候補として書き留めて。","result":{"kind":"chat","title":"今日の一問","lines":["今日もお疲れさまでした。1問だけ。","今日やってみた小さな工夫は？","（答え）昼休みに5分だけ読書した","書き留めました。ネタの在庫は6個です"]},"weight":"軽め","level":"はじめて","tags":["idea"]},{"id":"c092","cat":"自動でおまかせ","title":"毎朝の話題まとめ","hook":"起きたら今日のネタの種がある","ask":"毎朝［7時］に、［AI活用・仕事術］の新しい話題を3つ調べて、発信に使えそうな切り口と一緒に届けて。","result":{"kind":"list","title":"今朝の話題3つ","lines":["① 会議の文字起こしの新しい機能","② 在宅の日の時間の使い方が話題","③ 新人向けのAI研修が増えている","切り口：①を自分で試した話に","明日も7時に届けます"]},"weight":"軽め","level":"はじめて","tags":["time","learn"]},{"id":"c093","cat":"自動でおまかせ","title":"週の数字を届ける","hook":"月曜の朝に先週の答えが届く","ask":"毎週［月曜7時］に、先週の数字を貼るよう声をかけて。貼ったら、伸びた投稿と次の一手を3行で届けて。","result":{"kind":"chat","title":"先週の数字のお知らせ","lines":["おはようございます。先週の数字の日です。","数字を貼ってもらえたら、3行で返します。","先週は手順の投稿が伸びました。","次の一手：火曜に同じ型をもう1本"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c094","cat":"自動でおまかせ","title":"締切を前もって知らせる","hook":"うっかり出し忘れが減る","ask":"毎朝［7時］に、3日以内の締切があれば届けて。締切は［noteの公開予定日・会社の提出日］。","result":{"kind":"chat","title":"今朝の締切","lines":["おはようございます。締切が2つあります。","明日：会社の週報","あさって：noteの3本目（下書き7割）","今日は下書きに30分あてると楽です"]},"weight":"軽め","level":"はじめて","tags":["time","org"]},{"id":"c095","cat":"自動でおまかせ","title":"コメントの仕分け","hook":"先に返すべき物が分かる","ask":"毎晩［21時］に、コメントを貼るよう声をかけて。貼ったら質問・感想・気をつける物に分けて届けて。返信は私がします。","result":{"kind":"table","title":"今日のコメント","lines":["質問｜3件（★急ぎ 1件）","感想｜8件","気をつける物｜1件（勧誘の文）","★急ぎ｜「どこで読めますか」"]},"weight":"軽め","level":"はじめて","tags":["org"]},{"id":"c096","cat":"自動でおまかせ","title":"ネタの在庫を見張る","hook":"切れる前に補充が届く","ask":"毎週［日曜20時］に、私のネタの在庫を数えて、5個を切っていたら新しい案を5個足して届けて。","result":{"kind":"list","title":"ネタの在庫","lines":["いまの在庫：3個（5個を切りました）","足した案：雨の日の片づけ","足した案：昼休み10分の読書","…ほか3個","来週の日曜にまた数えます"]},"weight":"ふつう","level":"慣れたら","tags":["idea","org"]},{"id":"c097","cat":"自動でおまかせ","title":"同じ分野の流行を週1で","hook":"いま伸びている型が届く","ask":"毎週［金曜7時］に、［AI活用］の発信で最近よく見る話題と型を調べて、3つにまとめて届けて。","result":{"kind":"list","title":"今週よく見る型","lines":["① 「やめた事」を並べる型","② 1日の流れを時間で見せる型","③ 失敗談から入る型","来週はどれか1つ試してみましょう"]},"weight":"ふつう","level":"慣れたら","tags":["learn","idea"]},{"id":"c098","cat":"自動でおまかせ","title":"書く時間を先に取る","hook":"予定の空きに書く枠が入る","ask":"毎週［日曜20時］に、来週のカレンダーの空きから、noteを書く2時間の枠を2つ選んで届けて。登録は私が見てから。","result":{"kind":"table","title":"来週の書く時間","lines":["水 20:00〜22:00｜noteを書く","土 9:00〜11:00｜noteを書く","予備｜金 21時（ずれた時の分）","登録｜よければ「OK」とどうぞ"]},"weight":"ふつう","level":"慣れたら","tags":["time","org"]},{"id":"c099","cat":"自動でおまかせ","title":"月1のふり返り","hook":"続けるための次の一手が出る","ask":"毎月［最後の日曜20時］に、今月の発信をふり返る声かけを届けて。私が数字を貼ったら、よかった点と来月の一手を。","result":{"kind":"chat","title":"今月のふり返り","lines":["今月もお疲れさまでした。","よかった点：手順の投稿で保存が増えました","来月の一手：火曜の型を週2回に。","先月決めた目標も覚えていますよ。"]},"weight":"軽め","level":"慣れたら","tags":["learn","org"]},{"id":"c100","cat":"自動でおまかせ","title":"朝のメールを3行に","hook":"起きたら大事な物だけ分かる","ask":"毎朝［7時］に、届いたメールから急ぎの物だけ選んで、3行にまとめて届けて。返信はしないで。","result":{"kind":"list","title":"今朝の急ぎメール","lines":["① 経理：請求書の確認（今日まで）","② Bさん：会議が10時→11時に","③ 取引先：見積もりの返事待ち","ほか12通は急ぎではありません"]},"weight":"ふつう","level":"慣れたら","tags":["time"]}];
+const DIAG={"title":"Muse、何に使う？1分診断","questions":[{"q":"発信で一番困っているのは？","options":[{"label":"書く時間がない","tags":["time"]},{"label":"ネタが出ない","tags":["idea"]},{"label":"予定や数字がバラバラ","tags":["org"]},{"label":"画像やnoteが作れない","tags":["make"]}]},{"q":"Threadsを開いたら、まず何をする？","options":[{"label":"通知だけ見て閉じる","tags":["time"]},{"label":"何を書くか考え込む","tags":["idea"]},{"label":"数字を見てため息","tags":["org"]},{"label":"人の投稿を見て研究","tags":["learn"]}]},{"q":"人に頼めるなら、まず何？","options":[{"label":"下書きや清書","tags":["time"]},{"label":"予定と数字の整理","tags":["org"]},{"label":"画像や図解づくり","tags":["make"]},{"label":"伸びている投稿の調べ物","tags":["learn"]}]},{"q":"noteについて、いまの気持ちは？","options":[{"label":"何を書くか決まらない","tags":["idea"]},{"label":"下書きが溜まっている","tags":["org"]},{"label":"見出し画像も作りたい","tags":["make"]},{"label":"売れている物を知りたい","tags":["learn"]}]},{"q":"Museのこと、いまどう思う？","options":[{"label":"忙しいから任せたい","tags":["time"]},{"label":"使い道がまだ謎","tags":["idea"]},{"label":"絵やnoteを作りたい","tags":["make"]},{"label":"伸びている物を調べたい","tags":["learn"]}]}],"results":{"time":{"name":"書く時間がないタイプ","text":"下書き・清書・毎朝のまとめを任せて、書く時間を取り戻しましょう。"},"idea":{"name":"ネタが出ないタイプ","text":"考える前に聞くのが近道。ネタや題名を並べてもらい、選ぶだけに。"},"org":{"name":"数字と予定が散らかるタイプ","text":"投稿の予定・数字・コメントを、表と順番に整えてもらいましょう。"},"make":{"name":"画像とnoteを作りたいタイプ","text":"見出し画像や図解づくりが向いています。使用量は多めなので1つずつ。"},"learn":{"name":"伸びている物を調べたいタイプ","text":"同じ分野の伸びた投稿や人気noteを、調べて表にしてもらいましょう。"}},"ui":{"heroTitle":"Museに丸投げ図鑑","heroLead":"発信の使い道100個。押すと頼み方と例が見える","startDiag":"1分診断ではじめる","skipDiag":"診断せずに全部見る","copyDone":"コピーしました！Museに貼ってみてください","footer":"使ってみたら、感想をもらえると嬉しいです。","startRoute":"順番どおりに進める","routeTitle":"つなげ方","routeLead":"迷ったら、この順で。","opchatLabel":"感想はオプチャへ","opchatUrl":"https://line.me/ti/g2/fwniJhxyL7Eyh2E58Z_et-dwEYg2Q5euwNxeog?utm_source=invitation&utm_medium=link_copy&utm_campaign=default","guideTitle":"どれからやるか迷ったら","guideLead":"この手順でやってみてね。","guideBtn":"手順を見る"}};
+const ROUTES_RAW=[{"id":"r1","title":"アカウントを作るとき","lead":"何の人かと、最初の10本の予定ができる","time":"週末に1回","steps":[{"card":"c001","do":"経験から分野の候補を出す","pass":"候補から1つ選び、次の［　］に入れる"},{"card":"c002","do":"伸びている人を表にする","pass":"出た表を、そのまま次の［　］に貼る"},{"card":"c003","do":"共通点と空いた席を出す","pass":"空いた席を1つ選び、次の［　］に入れる"},{"card":"c004","do":"自分の切り口を3案出す","pass":"選んだ1案を覚えさせてから次へ"},{"card":"c006","do":"コンセプトを1文に決める","pass":"決めた1文を、プロフィールの頼み方に添える"},{"card":"c061","do":"プロフィール文を選ぶ","pass":"1文とプロフィールを貼って、次の頼み方へ"},{"card":"c008","do":"最初の10本の順番を決める","pass":"何の人かが伝わる、最初の10本の予定表"}]},{"id":"r2","title":"投稿を1本作るとき","lead":"ネタから添える絵まで、投稿1本がそろう","time":"30分〜","steps":[{"card":"c021","do":"ネタを10個並べる","pass":"1つ選んで、次の［　］にそのまま貼る"},{"card":"c033","do":"話に合う型を選ぶ","pass":"選んだ型と並べ方を、下書きの頼み方に添える"},{"card":"c031","do":"下書きを3案もらう","pass":"一番近い案を自分の言葉に直して次へ"},{"card":"c034","do":"1行目を5案に直す","pass":"選んだ1行目に差し替えて、全文を次に貼る"},{"card":"c038","do":"言い回しを点検する","pass":"直した全文の要点を、絵の［　］に入れる"},{"card":"c052","do":"添える絵を作る","pass":"自分で見直して出せる、投稿1本と絵1枚"}]},{"id":"r3","title":"1週間分をまとめて作る","lead":"5本の下書きと出す時間が、1回でそろう","time":"週末に1回","steps":[{"card":"c012","do":"読む人の悩みを集める","pass":"一番多い悩みを、次の［　］に入れる"},{"card":"c026","do":"悩みを5通りの切り口に","pass":"5つの切り口を貼り、1つずつ下書きを頼む"},{"card":"c031","do":"切り口ごとに下書き","pass":"5本の下書きを、まとめて次に貼る"},{"card":"c037","do":"スマホ向けに改行する","pass":"改行を整えた5本を、まとめて点検に回す"},{"card":"c038","do":"きつい言い方を点検","pass":"直した5本を残し、過去の数字を次に貼る"},{"card":"c086","do":"反応の多い時間を調べる","pass":"直した5本と、曜日ごとに出す時間の表"}]},{"id":"r4","title":"noteを1本出すとき","lead":"題名から知らせる投稿まで、記事1本が出せる","time":"週末に2回","steps":[{"card":"c041","do":"題名を10案から選ぶ","pass":"決めた題名を、目次の頼み方の［　］に入れる"},{"card":"c042","do":"見出し5つの目次を作る","pass":"目次を貼り、1章ずつ下書きを頼む"},{"card":"c045","do":"1章ずつ下書きする","pass":"全章そろったら、全文を点検に貼る"},{"card":"c047","do":"読みにくい所に印","pass":"直した全文を、次の［　］に貼る"},{"card":"c048","do":"「分かる事」を3行に","pass":"3行を冒頭に置き、題名を次の［　］へ"},{"card":"c056","do":"見出し画像を作る","pass":"画像を下書きに添え、題と要点を次へ"},{"card":"c065","do":"知らせる投稿を3案","pass":"公開できるnote1本と、知らせる投稿の案"}]},{"id":"r5","title":"有料noteを作るとき","lead":"企画から感想集めまで、有料noteの形ができる","time":"2〜3週末","steps":[{"card":"c071","do":"誰の何を解くか1文に","pass":"選んだ1文を、企画の頼み方に添える"},{"card":"c072","do":"企画と章立てを決める","pass":"章立てどおりに書き、下書きを次に貼る"},{"card":"c073","do":"無料と有料の切り目","pass":"決めた切り目と目次を、次の［　］に貼る"},{"card":"c074","do":"特典の案を出す","pass":"選んだ特典を企画に足して、次へ貼る"},{"card":"c076","do":"紹介文を作る","pass":"紹介文を貼り、買う前の質問を頼む"},{"card":"c077","do":"よくある質問を作る","pass":"質問と答えを紹介文の下に置いて次へ"},{"card":"c079","do":"感想のお願いを作る","pass":"紹介文・質問・感想のお願いつきの有料note"}]},{"id":"r6","title":"毎週ふり返るとき","lead":"数字から次の一手まで、毎週自動で届く形に","time":"毎週15分","steps":[{"card":"c081","do":"今週と先週を比べる","pass":"上がった投稿の文と数字を、次に貼る"},{"card":"c082","do":"伸びた3本の共通点","pass":"共通点を覚えさせ、下がった投稿を次に"},{"card":"c083","do":"少なかった理由を見る","pass":"変える所を1つ決め、今月の数字を次に"},{"card":"c085","do":"目標との差を見る","pass":"残りの量を覚えさせてから、次の頼み方へ"},{"card":"c093","do":"週の数字を毎週届ける","pass":"月曜に届いた声かけへ、数字を貼るだけに"},{"card":"c099","do":"月1のふり返りを届ける","pass":"毎週と毎月、ふり返りが自動で届く形"}]}];
+const CATS=["アカウント設計","リサーチ","ネタ出し","投稿","note","画像・図解","導線づくり","商品づくり","数字を読む","自動でおまかせ"];
+const COL={"アカウント設計":"#c8ecff","投稿":"#7dc5f2","note":"#6fe3c1","画像・図解":"#ff8fc2","ネタ出し":"#ffd479","リサーチ":"#b79cff","数字を読む":"#8ea8ff","導線づくり":"#5fd6e8","商品づくり":"#ffa97a","自動でおまかせ":"#b6ec7c","本業の時短":"#e3a4ff"};
+const SHORT={"アカウント設計":"設計","画像・図解":"画像","数字を読む":"数字","導線づくり":"導線","商品づくり":"商品","自動でおまかせ":"自動"};
+const TAGS=["time","idea","org","make","learn"];
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $=s=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const pad=n=>String(n).padStart(CARDS.length>99?3:2,"0");
+const U=DIAG.ui;
+CARDS.forEach((c,i)=>{c._n=i+1;});
+const CBYID={};CARDS.forEach(c=>{CBYID[c.id]=c;});
+const ROUTES=(Array.isArray(ROUTES_RAW)?ROUTES_RAW:[]).map(r=>({id:String(r.id),title:r.title||"",lead:r.lead||"",time:r.time||"",
+  steps:(r.steps||[]).filter(s=>s&&CBYID[s.card]).map(s=>({c:CBYID[s.card],do:s.do||"",pass:s.pass||""}))})).filter(r=>r.steps.length);
+const CROUTES={};ROUTES.forEach(r=>r.steps.forEach(s=>{(CROUTES[s.c.id]=CROUTES[s.c.id]||[]);if(CROUTES[s.c.id].indexOf(r)<0)CROUTES[s.c.id].push(r);}));
+let DONE={};try{DONE=JSON.parse(localStorage.getItem("mdz_route")||"{}")||{};}catch(e){DONE={};}
+function saveDone(){try{localStorage.setItem("mdz_route",JSON.stringify(DONE));}catch(e){}}
+function doneSet(r){return Array.isArray(DONE[r.id])?DONE[r.id]:[];}
+function doneN(r){const d=doneSet(r);return r.steps.filter(s=>d.indexOf(s.c.id)>=0).length;}
+
+/* ---------- views ---------- */
+const views={hero:$("#hero"),diag:$("#diag"),result:$("#result"),zukan:$("#zukan"),routes:$("#routes"),route:$("#route")};
+function show(name){
+  for(const k in views){views[k].hidden=k!==name;views[k].classList.remove("enter");}
+  window.scrollTo(0,0);
+  void views[name].offsetWidth;views[name].classList.add("enter");
+  if(name==="zukan")renderZ();
+  if(name==="routes")renderRoutes();
+}
+
+/* ---------- reveal ---------- */
+const io="IntersectionObserver" in window?new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.08}):null;
+function reveal(n){if(io)io.observe(n);else n.classList.add("in");}
+
+/* ---------- card ---------- */
+function makeCard(c,i){
+  const b=el("button","card");
+  b.style.setProperty("--c",COL[c.cat]||"#7dc5f2");
+  b.style.transitionDelay=((i%2)*70)+"ms";
+  const r=el("span","row");r.append(el("span","num",pad(c._n)),el("span","cat",SHORT[c.cat]||c.cat));
+  const w=el("span","wt");const lv=c.weight==="重め"?3:c.weight==="ふつう"?2:1;
+  for(let k=1;k<=3;k++){w.append(el("i",k<=lv?"f":""));}
+  w.append(el("em","",c.weight));
+  b.append(r,el("span","t",c.title),el("span","h",c.hook),w);
+  if(c.level==="慣れたら")b.append(el("span","lv","慣れたら"));
+  b.addEventListener("click",()=>openCard(c));
+  return b;
+}
+function fill(grid,list,fly){
+  grid.replaceChildren();
+  if(!list.length){grid.append(el("div","empty","なし"));return;}
+  list.forEach((c,i)=>{const n=makeCard(c,i);grid.append(n);if(fly){n.classList.add("in");n.style.transition="none";n.classList.add("fly");n.style.animationDelay=(i*90)+"ms";}else reveal(n);});
+}
+
+/* ---------- hero ---------- */
+$("#hTitle").textContent=U.heroTitle;$("#hLead").textContent=U.heroLead;
+$("#bStart").textContent=U.startDiag;$("#bAll").textContent=U.skipDiag;$("#rAll").textContent=U.skipDiag;
+(function(){const f=$("#foot");f.append(el("p","ft",U.footer));const a=el("a","btn main oc",U.opchatLabel||"感想はオプチャへ");if(U.opchatUrl){a.href=U.opchatUrl;a.target="_blank";a.rel="noopener";}f.append(a);
+})();
+(function(){
+  const box=$("#stats");
+  [[CARDS.length,"枚の見本"],[CATS.length,"ジャンル"],[1,"分で診断"]].forEach(([n,l],i)=>{
+    const s=el("div","stat");const b=el("b","",RM?String(n):"0");s.append(b,el("span","",l));box.append(s);
+    if(!RM){const t0=performance.now()+250+i*150,dur=1100;const f=now=>{const p=Math.max(0,Math.min(1,(now-t0)/dur));b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f);};requestAnimationFrame(f);}
+  });
+  const m=$("#marq");
+  [0,1].forEach(r=>{
+    let list=CARDS.slice();if(r)list=list.slice(Math.floor(list.length/2)).concat(list.slice(0,Math.floor(list.length/2))).reverse();
+    while(list.length&&list.length<12)list=list.concat(list);
+    const tr=el("div","track"+(r?" rev":""));
+    for(let k=0;k<2;k++)list.forEach(c=>{const d=el("div","mini");d.style.setProperty("--c",COL[c.cat]);d.append(el("small","",pad(c._n)+" "+(SHORT[c.cat]||c.cat)),el("b","",c.title));tr.append(d);});
+    m.append(tr);
+  });
+})();
+$("#bAll").onclick=()=>{state.cat="すべて";state.easy=false;show("zukan");};
+$("#bStart").onclick=startDiag;
+
+
+$("#rAll").onclick=()=>$("#bAll").onclick();
+$("#rtBack").onclick=()=>show("zukan");["dBack","rBack","zBack"].forEach(id=>$("#"+id).onclick=()=>show("hero"));
+let fromZ=false;$("#rdBack").onclick=()=>{if(fromZ){fromZ=false;show("zukan");}else show("routes");};
+function renderGuide(){const g=$("#zGuide"),box=$("#gList");box.replaceChildren();let rs;
+  const catOf={};CARDS.forEach(c=>catOf[c.id]=c.cat);
+  if(state.cat==="すべて"){rs=ROUTES.slice();$("#gT").textContent="どれからやるか迷ったら";$("#gL").textContent="やりたい事を選ぶと、手順が出ます。";}
+  else{rs=ROUTES.map(r=>({r,n:r.steps.filter(x=>x.c&&x.c.cat===state.cat).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n).slice(0,2).map(x=>x.r);$("#gT").textContent="「"+state.cat+"」で迷ったら";$("#gL").textContent="この手順でやってみてね。";}
+  g.hidden=!rs.length;box.classList.toggle("two",rs.length>2);
+  rs.forEach(r=>{const b=el("button","gr");b.append(el("b","",r.title),el("small","",r.steps.length+"ステップ　→"));b.onclick=()=>{fromZ=true;openRoute(r);};box.append(b);});}
+
+/* ---------- diag ---------- */
+let qi=0,score={},busy=false;
+function startDiag(){qi=0;score={};busy=false;show("diag");renderQ();}
+function renderQ(){
+  const q=DIAG.questions[qi],b=$("#qbody");
+  $("#prog").style.width=((qi)/DIAG.questions.length*100)+"%";
+  b.replaceChildren(el("div","qn",(qi+1)+" / "+DIAG.questions.length),el("div","q",q.q));
+  const o=el("div","opts");
+  q.options.forEach(op=>{
+    const bt=el("button","opt",op.label);
+    bt.onclick=()=>{
+      if(busy)return;busy=true;bt.classList.add("sel");
+      (op.tags||[]).forEach(t=>score[t]=(score[t]||0)+1);
+      $("#prog").style.width=((qi+1)/DIAG.questions.length*100)+"%";
+      setTimeout(()=>{
+        if(qi+1>=DIAG.questions.length){busy=false;finish();return;}
+        b.classList.add("out");
+        setTimeout(()=>{qi++;b.classList.remove("out");busy=false;renderQ();},RM?0:220);
+      },RM?0:420);
+    };
+    o.append(bt);
+  });
+  b.append(o);
+  b.classList.remove("in");void b.offsetWidth;b.classList.add("in");
+}
+function pickFor(sc){
+  return CARDS.map(c=>({c,s:(c.tags||[]).reduce((a,t)=>a+(sc[t]||0),0)+(c.level==="はじめて"?.5:0)}))
+    .sort((a,b)=>b.s-a.s||a.c._n-b.c._n).slice(0,10).map(x=>x.c);
+}
+function topType(sc){let best=TAGS[0],m=-1;TAGS.forEach(t=>{if((sc[t]||0)>m){m=sc[t]||0;best=t;}});return best;}
+function finish(){const t=topType(score);try{localStorage.setItem("mdz_type",JSON.stringify({t,sc:score}));}catch(e){}showResult(t,score);}
+function showResult(t,sc){
+  show("result");
+  const r=DIAG.results[t]||{name:"",text:""};
+  const n=$("#rName");n.textContent=r.name;n.style.animation="none";void n.offsetWidth;n.style.animation="";
+  $("#rText").textContent=r.text;
+  fill($("#rGrid"),pickFor(sc),!RM);
+  if(RM)$("#rGrid").querySelectorAll(".card").forEach(c=>c.classList.add("in"));
+}
+try{const s=JSON.parse(localStorage.getItem("mdz_type")||"null");if(s&&s.t&&DIAG.results[s.t]){$("#bLast").hidden=false;$("#bLast").onclick=()=>showResult(s.t,s.sc||{});}}catch(e){}
+
+/* ---------- zukan ---------- */
+const state={cat:"すべて",easy:false};
+(function(){
+  const box=$("#chips");
+  ["すべて"].concat(CATS).forEach(n=>{
+    const b=el("button","chip",n);if(COL[n])b.style.setProperty("--c",COL[n]);
+    b.onclick=()=>{state.cat=n;box.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));swap();};
+    if(n===state.cat)b.classList.add("on");box.append(b);
+  });
+  $("#sw").onclick=e=>{const s=e.currentTarget;state.easy=!state.easy;s.setAttribute("aria-checked",state.easy);swap();};
+})();
+function list(){return CARDS.filter(c=>(state.cat==="すべて"||c.cat===state.cat)&&(!state.easy||c.level==="はじめて"));}
+function renderZ(){
+  $("#chips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x.textContent===state.cat));
+  $("#sw").setAttribute("aria-checked",state.easy);
+  const l=list();$("#zCnt").textContent=l.length+"枚";fill($("#zGrid"),l,false);renderGuide();
+}
+function swap(){const g=$("#zGrid");if(RM){renderZ();return;}g.classList.add("out");setTimeout(()=>{renderZ();g.classList.remove("out");},150);}
+
+/* ---------- routes ---------- */
+$("#rtTitle").textContent=U.routeTitle||"つなげ方";
+if(U.routeLead){$("#rtLead").textContent=U.routeLead;$("#rtLead").hidden=false;}
+function metaLine(r){return [r.time?"目安 "+r.time:"",r.steps.length+"ステップ"].filter(Boolean);}
+function renderRoutes(){
+  const box=$("#rtList");box.replaceChildren();
+  ROUTES.forEach(r=>{
+    const b=el("button","rcard");
+    const n=doneN(r),tot=r.steps.length;
+    if(n===tot)b.classList.add("fin");
+    b.append(el("span","rt",r.title));
+    if(r.lead)b.append(el("span","rl",r.lead));
+    const m=el("span","rm");metaLine(r).forEach(x=>m.append(el("span","",x)));
+    m.append(el("span","",n===tot?"ぜんぶ済み":n+" / "+tot+" 済み"));b.append(m);
+    const pl=el("span","pl"),i=el("i");i.style.width=(n/tot*100)+"%";pl.append(i);b.append(pl);
+    b.onclick=()=>openRoute(r);box.append(b);
+  });
+}
+let curR=null;
+function openRoute(r){curR=r;show("route");renderRoute();}
+function nextIdx(r){const d=doneSet(r);return r.steps.findIndex(s=>d.indexOf(s.c.id)<0);}
+function renderRoute(){
+  const r=curR,hd=$("#rdHead");
+  hd.replaceChildren(el("h2","",r.title));
+  if(r.lead)hd.append(el("p","",r.lead));
+  const pl=el("div","pl"),pi=el("i");pl.append(pi);hd.append(pl,el("div","pc",""));
+  const box=$("#rdSteps");box.replaceChildren();
+  r.steps.forEach((s,i)=>{
+    const st=el("div","step");st.style.setProperty("--c",COL[s.c.cat]||"#7dc5f2");
+    st.append(el("div","nd",String(i+1)));
+    if(i<r.steps.length-1){const rl=el("div","rail");rl.append(el("i"));st.append(rl);}
+    const col=el("div","stepcol");
+    const b=el("button","sbtn");
+    b.append(el("span","sc",s.c.cat),el("span","st2",pad(s.c._n)+"　"+s.c.title));
+    if(s.do)b.append(el("span","sd",s.do));
+    b.onclick=()=>openCard(s.c,{r,i});
+    col.append(b);
+    if(s.pass&&i<r.steps.length-1)col.append(el("span","pass","↓ "+s.pass));
+    st.append(col);box.append(st);
+  });
+  syncRoute(-1,false);
+}
+function syncRoute(anim,fin){
+  const r=curR,d=doneSet(r),steps=$("#rdSteps").children,nx=nextIdx(r),n=doneN(r),tot=r.steps.length;
+  r.steps.forEach((s,i)=>{
+    const st=steps[i],dn=d.indexOf(s.c.id)>=0,nd=st.querySelector(".nd");
+    st.classList.toggle("done",dn);st.classList.toggle("next",i===nx);
+    nd.textContent=dn?"✓":String(i+1);
+    if(i===anim){nd.classList.remove("pop");void nd.offsetWidth;nd.classList.add("pop");}
+  });
+  $("#rdHead .pl i").style.width=(n/tot*100)+"%";
+  $("#rdHead .pc").textContent=n+" / "+tot+" 済み";
+  const ft=$("#rdFoot");ft.replaceChildren();
+  if(n===tot){
+    const f=el("div","fin2"+(fin&&!RM?" glow":""));f.append(el("b","","おつかれさま"),el("span","","この道すじは、ぜんぶ済みました"));ft.append(f);
+  }
+  if(n>0){const rb=el("button","btn ghost rbtn","やり直す");rb.onclick=()=>{delete DONE[r.id];saveDone();syncRoute(-1,false);};ft.append(rb);}
+  if(fin&&nx>=0&&steps[nx]&&!RM)steps[nx].scrollIntoView({block:"center",behavior:"smooth"});
+}
+function markStep(r,card,on){
+  const d=doneSet(r).slice();const k=d.indexOf(card.id);
+  if(on&&k<0)d.push(card.id);if(!on&&k>=0)d.splice(k,1);
+  DONE[r.id]=d;saveDone();
+  if(curR===r&&!views.route.hidden){
+    const i=r.steps.findIndex(s=>s.c.id===card.id);
+    setTimeout(()=>syncRoute(on?i:-1,on&&doneN(r)===r.steps.length),RM?0:380);
+  }
+}
+
+/* ---------- sheet ---------- */
+let TK=0,lastFocus=null;
+const sheet=$("#sheet"),bd=$("#bd");
+function closeSheet(){
+  TK++;sheet.classList.remove("on");bd.classList.remove("on");document.body.style.overflow="";
+  setTimeout(()=>{sheet.hidden=true;bd.hidden=true;},RM?0:500);
+  if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
+}
+$("#sX").onclick=closeSheet;bd.onclick=closeSheet;
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!sheet.hidden)closeSheet();});
+
+function typed(parent,text,tag){
+  const w=tag?el(tag):document.createDocumentFragment();
+  const t=el("span","t",""),u=el("span","u",text);
+  w.append(t,u);
+  if(parent)parent.append(w);
+  return {t,u,full:text,node:w};
+}
+function splitKV(s){const m=s.match(/^(.{1,14}?)[：:｜|→]\s*(.+)$/);return m?[m[1],m[2]]:null;}
+const RENDER={
+  list(r,items){
+    const s=el("div","scr k-list");s.append(el("div","hd",r.title));const ul=el("ul");
+    r.lines.forEach(l=>{const li=el("li","row-i");li.append(el("span","ck"));const t=typed(li,l,"span");ul.append(li);items.push({row:li,...t});});
+    s.append(ul);return s;
+  },
+  doc(r,items){
+    const s=el("div","scr k-doc"),p=el("div","pp");p.append(el("h4","",r.title));
+    r.lines.forEach(l=>{const q=el("p","row-i");const t=typed(q,l);p.append(q);items.push({row:q,...t});});
+    s.append(p);return s;
+  },
+  table(r,items){
+    const s=el("div","scr k-table");s.append(el("div","hd",r.title));const g=el("div","tb");
+    r.lines.forEach((l,i)=>{
+      const kv=splitKV(l)||[String(i+1),l];
+      kv.forEach(x=>{const d=el("div","row-i");const t=typed(d,x);g.append(d);items.push({row:d,...t});});
+    });
+    s.append(g);return s;
+  },
+  chat(r,items){
+    const s=el("div","scr k-chat"),h=el("div","hd");h.append(el("span","av","M"),el("span","",r.title));s.append(h);
+    const c=el("div","cb");
+    r.lines.forEach(l=>{const b=el("div","bb row-i");const t=typed(b,l);c.append(b);items.push({row:b,...t});});
+    s.append(c);return s;
+  },
+  site(r,items){
+    const s=el("div","scr k-site"),bw=el("div","bw");bw.append(el("i"),el("i"),el("i"),el("span","url",r.title));s.append(bw);
+    const pg=el("div","pg"),hs=el("div","hero-s");
+    const L=r.lines;
+    const h=el("h4","row-i"),t0=typed(h,L[0]||"");hs.append(h);items.push({row:h,...t0});
+    if(L.length>1){const p=el("p","row-i"),t1=typed(p,L[1]);hs.append(p);items.push({row:p,...t1});}
+    pg.append(hs);
+    L.slice(2).forEach(l=>{const b=el("div","blk row-i");const t=typed(b,l);pg.append(b);items.push({row:b,...t});});
+    pg.append(el("span","fk","▶"));
+    s.append(pg);return s;
+  },
+  image(r,items){
+    const s=el("div","scr k-image"),f=el("div","fr"),a=el("div","art");
+    a.append(el("b","a1"),el("b","a2"),el("b","a3"));
+    const cap=el("div","cap");
+    r.lines.forEach(l=>{const d=el("div","row-i");const t=typed(d,l);cap.append(d);items.push({row:d,...t});});
+    a.append(cap);f.append(a);s.append(f,el("div","plate",r.title));return s;
+  }
+};
+function play(items,tk){
+  if(RM){items.forEach(it=>{it.row.classList.add("on");it.t.textContent=it.full;it.u.textContent="";});return;}
+  let i=0;
+  const next=()=>{
+    if(tk!==TK||i>=items.length)return;
+    const it=items[i++];it.row.classList.add("on");
+    const st=performance.now();
+    const f=now=>{
+      if(tk!==TK)return;
+      const n=Math.min(it.full.length,Math.floor((now-st)/1000*55)+1);
+      it.t.textContent=it.full.slice(0,n);it.u.textContent=it.full.slice(n);
+      if(n<it.full.length)requestAnimationFrame(f);else setTimeout(next,140);
+    };
+    requestAnimationFrame(f);
+  };
+  setTimeout(next,450);
+}
+function openCard(c,ctx){
+  lastFocus=document.activeElement;
+  const tk=++TK;
+  sheet.style.setProperty("--c",COL[c.cat]);
+  $("#sNum").textContent=pad(c._n);$("#sTitle").textContent=c.title;
+  const body=$("#sBody");body.replaceChildren();body.scrollTop=0;
+  body.append(el("span","lab","頼み方"));
+  const bub=el("div","bubble");
+  c.ask.split(/(［[^］]*］)/).forEach(p=>{if(!p)return;bub.append(/^［/.test(p)?el("span","ph",p):document.createTextNode(p));});
+  body.append(bub);
+  const cp=el("button","btn main copy","コピー");cp.style.animation="none";
+  const fb=el("textarea","fb");fb.readOnly=true;fb.hidden=true;fb.value=c.ask;
+  cp.onclick=async()=>{
+    let ok=false;
+    try{await navigator.clipboard.writeText(c.ask);ok=true;}catch(e){}
+    if(!ok){fb.hidden=false;fb.focus();fb.select();}
+    else{cp.textContent=U.copyDone;cp.classList.remove("done");void cp.offsetWidth;cp.classList.add("done");setTimeout(()=>{cp.textContent="コピー";cp.classList.remove("done");},1800);}
+  };
+  body.append(cp,fb);
+  const ar=el("div","arrow");ar.append(el("span","","↓ できあがり"));body.append(ar);
+  const items=[];const fn=RENDER[c.result.kind]||RENDER.list;
+  body.append(fn(c.result,items));
+  if(ctx){
+    const isD=doneSet(ctx.r).indexOf(c.id)>=0;
+    const dn=el("button","btn main dn"+(isD?" undo":""),isD?"済みを取り消す":"このステップを済みにする");
+    if(isD)dn.style.animation="none";
+    dn.onclick=()=>{closeSheet();markStep(ctx.r,c,!isD);};
+    body.append(dn);
+  }else if(CROUTES[c.id]){
+    const v=el("div","via");
+    CROUTES[c.id].forEach(r=>{const b=el("button","btn ghost","この順で使う："+r.title);b.onclick=()=>{closeSheet();openRoute(r);};v.append(b);});
+    body.append(v);
+  }
+  bd.hidden=false;sheet.hidden=false;void sheet.offsetWidth;
+  bd.classList.add("on");sheet.classList.add("on");document.body.style.overflow="hidden";
+  play(items,tk);
+  $("#sX").focus({preventScroll:true});
+}
+show("hero");
+</script>
+</body>
+</html>
