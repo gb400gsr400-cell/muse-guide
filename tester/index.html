@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ja" data-state="open" data-form="pending">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Threadsダッシュボード テスター募集</title>
+<meta name="description" content="投稿の準備は、Museに任せていい。毎晩、リサーチから下書きまでそろえておく「Threadsダッシュボード」のテスター募集。">
+<meta name="theme-color" content="#070B14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Noto+Sans+JP:wght@400;700;900&family=Yomogi&display=swap" rel="stylesheet">
+<script>
+/* ===== ここだけ替える ===== */
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeuWCC159NTc0DN9cZbnq0WIeBdnGx44CWsGMb3CJX6QRnkWg/viewform";                              // 応募フォームのURL。空のうちはボタンが「準備中」になり、押しても飛ばない
+const END_AT   = "2026-11-22T09:00:00+09:00";     // 受付終了（日本時間）。それまでは受付中、過ぎたら終了後の表示
+const PREVIEW  = false;                           // 確認用の1ファイル版だけ true（時刻に関係なく受付中で見せる）
+/* ======================== */
+</script>
+<style>
+:root{
+  --night:#070B14; --face:#0D1424; --water:#8FD8FF; --glow:#5CC8FF; --white:#EAF2FA; --mist:#8A9BB0;
+  --btn:#9BDCFF; --btn-ink:#06101C; --line:rgba(160,220,255,.14);
+  --ja:"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --mono:"JetBrains Mono", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --pad:80px; --bar-h:60px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--night)}
+body{margin:0;background:var(--night);color:var(--white);font-family:var(--ja);font-weight:400;font-size:16px;line-height:2;
+  letter-spacing:.04em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+h1,h2,h3,p,ul,figure{margin:0;padding:0}
+ul{list-style:none}
+img{display:block;max-width:100%;height:auto}
+p,li,h1,h2,h3{line-break:strict;overflow-wrap:anywhere}
+.ln,.voice,.beats li,.qa span{text-wrap:pretty}
+.w{display:inline-block;max-width:100%}
+.ln{display:block}
+.wrap{position:relative;max-width:608px;margin:0 auto;padding:var(--pad) 24px}
+
+/* 節：地の切り替え＋本文の幅の光の線 */
+.sec{position:relative;background:var(--night)}
+.sec.face{background:var(--face)}
+.sec+.sec::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(560px, calc(100% - 48px));height:1px;
+  background:linear-gradient(90deg,transparent,rgba(143,216,255,.5),transparent)}
+
+/* 読み物の組み */
+.prose{color:rgba(234,242,250,.9)}
+.prose > p{margin-top:1.6em}
+.prose > p:first-child{margin-top:0}
+.mark{display:block;width:28px;height:2px;margin-bottom:20px;background:var(--water);box-shadow:0 0 12px rgba(92,200,255,.6)}
+h2{font-size:clamp(21px, 6.6vw, 36px);font-weight:700;line-height:1.45;letter-spacing:.02em;color:var(--white);margin-bottom:32px}
+.prose > .mark:not(:first-child){margin-top:48px}
+h3{font-size:clamp(15px, 4.8vw, 20px);font-weight:700;line-height:1.55;color:var(--white);letter-spacing:.02em}
+
+/* ガラス */
+.glass{position:relative;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.card{margin-top:16px;padding:22px 20px 24px}
+h2 + .glass.card,.pic + .glass.card,p + .glass.card{margin-top:28px}
+.card h3{position:relative;padding-left:18px}
+.card h3::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow)}
+.card p{margin-top:12px;font-size:15px;line-height:1.95;color:rgba(234,242,250,.84)}
+
+/* 「変わること」は囲みを外し、小見出し＋区切り線（次の節の札と形を変える） */
+.changes .card{background:none;border:0;border-top:1px solid rgba(143,216,255,.18);border-radius:0;box-shadow:none;padding:28px 0 0;margin-top:40px}
+.changes h2 + p + .card,.changes p + .card{margin-top:40px}
+.changes .card h3{font-size:clamp(17px, 5vw, 21px)}
+.changes .card p{font-size:16px;color:rgba(234,242,250,.88)}
+
+/* 言い当て・届いた声 */
+.voices{margin-top:28px;display:grid;gap:10px}
+.voices + p{margin-top:28px}
+.voice{position:relative;padding:14px 18px 14px 40px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);font-size:15px;line-height:1.8;color:var(--white)}
+.voice::before{content:"";position:absolute;left:18px;top:1.35em;width:6px;height:6px;border-radius:50%;background:var(--water);box-shadow:0 0 10px rgba(92,200,255,.7)}
+
+/* 並べる短い文（探す・集める・書く…） */
+.beats{position:relative;margin-top:28px;padding-left:22px}
+.beats::before{content:"";position:absolute;left:3px;top:.9em;bottom:.9em;width:1px;background:linear-gradient(180deg,rgba(143,216,255,.6),rgba(143,216,255,.2))}
+.beats li{position:relative;color:var(--white);font-weight:700}
+.beats li+li{margin-top:8px}
+.beats li::before{content:"";position:absolute;left:-22px;top:.78em;width:7px;height:7px;border-radius:50%;background:var(--water);box-shadow:0 0 8px rgba(92,200,255,.7)}
+.beats + p{margin-top:28px}
+
+/* 質問 */
+.qa{margin-top:14px;padding:20px 18px 22px}
+h2 + .pic + .qa,h2 + .qa{margin-top:24px}
+.qa .q{display:grid;grid-template-columns:28px 1fr;column-gap:10px;align-items:start}
+.qa .a{display:block}
+.qa .a .tag{display:flex;margin:0 0 8px}
+.qa .q{font-weight:700;color:var(--white);line-height:1.7}
+.qa .a{margin-top:14px;padding-top:14px;border-top:1px solid rgba(143,216,255,.10);font-size:16px;line-height:1.95;color:rgba(234,242,250,.84)}
+.qa .tag{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;font-family:var(--mono);font-size:12px;margin-top:1px}
+.qa .q .tag{background:var(--btn);color:var(--btn-ink)}
+.qa .a .tag{border:1px solid rgba(143,216,255,.35);color:var(--water)}
+
+/* 絵 */
+.pic{margin:40px auto}
+h2 + .pic{margin-top:0}
+.pic img{width:100%}
+.pic.wide{border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.pic.wide img{aspect-ratio:16/9;object-fit:cover}
+.pic.tall{width:min(64%, 300px);border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.pic.tall img{aspect-ratio:9/16;object-fit:cover}
+.pic.cut{position:relative;width:min(56%, 240px)}
+.pic.cut::before{content:"";position:absolute;left:-20%;right:-20%;top:5%;bottom:-5%;border-radius:50%;background:radial-gradient(circle,rgba(92,200,255,.22),transparent 65%)}
+.pic.cut img{position:relative;-webkit-mask-image:linear-gradient(180deg,#000 76%,transparent);mask-image:linear-gradient(180deg,#000 76%,transparent)}
+
+/* 強調の文（色と大きさ。浮きすぎないよう、太さと水色の細い下線まで） */
+.em{display:block;margin-top:.5em;font-size:clamp(16px, 4.8vw, 20px);font-weight:700;line-height:1.75;color:var(--water);letter-spacing:.03em}
+.em::after{content:"";display:block;width:40px;height:2px;margin-top:10px;background:linear-gradient(90deg,var(--glow),transparent);box-shadow:0 0 10px rgba(92,200,255,.5)}
+p > .em:first-child{margin-top:0}
+
+/* 強調（赤）：フブキのマフラーの赤。流し見でも目に入る強さ */
+.em-red{font-size:clamp(19px, 5.6vw, 24px);font-weight:900;color:#FF4D5E;line-height:1.6;letter-spacing:.02em;
+  text-shadow:0 0 18px rgba(255,60,80,.35)}
+.em-red::after{width:56px;height:3px;background:linear-gradient(90deg,#FF4D5E,transparent);box-shadow:0 0 12px rgba(255,60,80,.6)}
+.em-red .w{background:linear-gradient(transparent 62%,rgba(224,40,60,.28) 62%)}
+
+/* 絵の上の文字：5つの形。顔にかぶせない位置に置く */
+.pic.has-cap{position:relative}
+.cap{position:absolute;pointer-events:none}
+/* 1 斜めの帯（右上がり。濃紺地に白抜き） */
+.cap-slash{left:-6%;right:auto;bottom:5%;padding-right:22px !important;transform:rotate(-6deg);transform-origin:left center;background:var(--night);
+  border-top:2px solid var(--glow);border-bottom:2px solid var(--glow);padding:8px 0 8px 10%;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.cap-slash > span{white-space:nowrap;font-size:clamp(16px, 5vw, 28px);font-weight:900;color:#fff;letter-spacing:.08em;line-height:1.2}
+/* 2 ノートパソコンの画面の中の文字（画面の文字風・小さめ） */
+.cap-screen{left:22%;right:22%;top:76%;height:11%;display:flex;align-items:center;justify-content:center}
+.cap-screen > span{white-space:nowrap;font-family:var(--mono),var(--ja);font-size:clamp(12px, 3.4vw, 14px);font-weight:700;color:#0B2A4A;letter-spacing:.06em;
+  background:rgba(255,255,255,.78);border-radius:4px;padding:3px 8px;box-shadow:0 0 12px rgba(160,220,255,.9)}
+.cap-screen > span::after{content:"";display:inline-block;width:2px;height:1em;margin-left:4px;vertical-align:-2px;background:#0B2A4A;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+/* 3 手書き風の大きな文字（空の部分） */
+.cap-hand{right:4%;top:6%;max-width:60%;text-align:right}
+.cap-hand > span{font-family:"Yomogi",var(--ja);font-size:clamp(21px, 6.4vw, 38px);color:#fff;line-height:1.25;
+  text-shadow:0 2px 0 rgba(7,11,20,.7),0 0 16px rgba(7,11,20,.8),0 0 2px rgba(7,11,20,.9);transform:rotate(-4deg);display:inline-block}
+/* 4 付箋風のメモ（絵の隅） */
+.cap-note{left:5%;top:9%;transform:rotate(-5deg);background:#FFF3B0;padding:12px 14px 14px;border-radius:2px;
+  box-shadow:0 10px 18px rgba(0,0,0,.45)}
+.cap-note::before{content:"";position:absolute;left:50%;top:-8px;width:44px;height:16px;margin-left:-22px;background:rgba(143,216,255,.55);transform:rotate(3deg)}
+.cap-note > span{font-family:"Yomogi",var(--ja);font-size:clamp(15px, 4.4vw, 20px);color:#3A2F10;line-height:1.3;display:inline-block}
+/* 5 絵の下の帯（水色地に白い太字） */
+.cap-band{position:static;padding:12px 12px 14px;text-align:center;background:linear-gradient(90deg,#2C9CE0,#5CC8FF)}
+.cap-band > span{font-size:clamp(20px, 6vw, 28px);font-weight:900;color:#fff;letter-spacing:.06em;text-shadow:0 2px 0 rgba(6,40,80,.45)}
+.pic.tall.has-cap{overflow:hidden}
+
+
+/* 絵見出し（サムネ型）：絵を幅いっぱいに置き、見出しを大きく太く。文字は絵の空いた所。読める所だけ暗くする */
+.thumb{position:relative;margin:48px -24px 36px;overflow:hidden;background:#05080f}
+.prose > .thumb:first-child{margin-top:0}
+.thumb img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.thumb figcaption{position:absolute;left:0;right:0;padding:16px 14px;pointer-events:none}
+.thumb.m-top figcaption{top:0;padding-bottom:56px;background:linear-gradient(180deg,rgba(5,8,15,.88) 0%,rgba(5,8,15,.6) 60%,rgba(5,8,15,0) 100%)}
+.thumb.m-bottom figcaption{bottom:0;padding-top:56px;background:linear-gradient(0deg,rgba(5,8,15,.9) 0%,rgba(5,8,15,.62) 60%,rgba(5,8,15,0) 100%)}
+.tt{margin:0;font-weight:900;color:#fff;line-height:1.18;letter-spacing:.01em;transform:rotate(-2deg);transform-origin:left center}
+.tl{display:block;white-space:nowrap;font-size:var(--fs);
+  text-shadow:0 3px 0 #05080f,0 -1px 0 #05080f,2px 0 0 #05080f,-2px 0 0 #05080f,0 6px 18px rgba(0,0,0,.75);-webkit-text-stroke:1px #05080f;paint-order:stroke fill}
+.tl + .tl{margin-top:.12em}
+.hot{font-style:normal}
+.hot.red{color:#FF3B4E}
+.hot.sky{color:#7FDBFF}
+.hot.white{color:#fff}
+.tl.strong{line-height:1.1}
+.thumb .mark{display:none}
+/* 表紙のサムネ */
+.hero .thumb{margin:0 -24px 20px}
+.hero .lead{margin-top:6px}
+
+@media (min-width:768px){
+  .thumb{margin:72px calc(50% - min(460px, 50vw - 24px)) 48px;border-radius:18px;border:1px solid var(--line)}
+  .hero .thumb{margin:0 calc(50% - min(460px, 50vw - 24px)) 28px}
+  .thumb img{aspect-ratio:16/9}
+  .thumb figcaption{top:0;bottom:0;padding:32px 40px;display:flex;flex-direction:column;justify-content:center;background:none !important}
+  .thumb.d-right figcaption{left:44%;padding-right:28px;right:0;align-items:flex-end;text-align:right;background:linear-gradient(270deg,rgba(5,8,15,.85),rgba(5,8,15,0)) !important}
+  .thumb.d-left figcaption{left:0;right:44%;padding-left:28px;background:linear-gradient(90deg,rgba(5,8,15,.85),rgba(5,8,15,0)) !important}
+  .thumb.d-top figcaption{bottom:auto;padding:28px 40px 80px;background:linear-gradient(180deg,rgba(5,8,15,.85),rgba(5,8,15,0)) !important}
+  .thumb.d-bottomleft figcaption{top:auto;right:40%;padding:80px 40px 28px;background:linear-gradient(0deg,rgba(5,8,15,.85),rgba(5,8,15,0)) !important}
+  .thumb.d-right .tt{transform-origin:right center}
+  .thumb.d-right.narrow figcaption{left:56%}
+  .tl,.tl.strong{font-size:var(--fd)}
+  .tl{-webkit-text-stroke:1.5px #05080f}
+  .thumb img{object-position:50% 50% !important}
+}
+
+/* ボタン */
+.cta{margin:40px auto 0;max-width:360px}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;height:58px;border-radius:14px;background:var(--btn);color:var(--btn-ink);
+  font-family:var(--ja);font-weight:700;font-size:16px;letter-spacing:.06em;text-decoration:none;white-space:nowrap;
+  box-shadow:0 0 0 1px rgba(143,216,255,.35),0 8px 32px rgba(92,200,255,.28);transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+  -webkit-tap-highlight-color:transparent}
+.btn:active{transform:translateY(1px);box-shadow:0 0 0 1px rgba(143,216,255,.35),0 4px 16px rgba(92,200,255,.14)}
+.btn.off{background:rgba(255,255,255,.06);color:var(--mist);box-shadow:inset 0 0 0 1px rgba(143,216,255,.14);cursor:default;pointer-events:none}
+a:focus-visible{outline:2px solid var(--water);outline-offset:4px}
+
+/* 状態で出し分け（受付中／終了後）。data-form="pending" は URL が入るまで「準備中」 */
+html[data-state="open"] [data-when]:not([data-when~="open"]),
+html[data-state="closed"] [data-when]:not([data-when~="closed"]){display:none !important}
+html[data-form="pending"] .if-ready,
+html[data-form="ready"] .if-pending{display:none !important}
+
+/* 表紙 */
+.grid::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(143,216,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(143,216,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;background-position:center top;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 70%);mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 70%)}
+.hero{overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 45% at 50% 0%,rgba(92,200,255,.18),transparent)}
+.hero .wrap{z-index:2;padding-top:28px;padding-bottom:72px}
+#dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero .pic.wide{margin:0 0 16px;box-shadow:0 0 0 1px rgba(143,216,255,.18),0 24px 80px rgba(92,200,255,.18)}
+h1{font-size:clamp(30px, 8.6vw, 54px);font-weight:700;line-height:1.3;letter-spacing:.01em}
+.lead{margin-top:14px;color:rgba(234,242,250,.88);font-size:clamp(13px, 4.1vw, 17px);letter-spacing:.01em}
+.chip{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:8px 16px;border-radius:999px;font-size:13px;letter-spacing:.12em;
+  background:rgba(255,255,255,.035);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow)}
+.hero .cta{margin:12px 0 0}
+.rise{opacity:0;transform:translateY(12px);animation:rise .7s var(--ease) forwards}
+.hero .pic.rise{animation-delay:.02s}.hero h1.rise{animation-delay:.1s}.hero .lead.rise{animation-delay:.18s}.hero .chip.rise{animation-delay:.24s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* 最後の節：下から光 */
+.sec:last-of-type::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 40% at 50% 100%,rgba(92,200,255,.14),transparent)}
+
+/* フッター */
+.ft{background:var(--night);border-top:1px solid rgba(143,216,255,.08)}
+.ft .in{height:calc(24px + var(--bar-h) + env(safe-area-inset-bottom))}
+
+/* 下に常に出る帯 */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(7,11,20,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  padding-bottom:env(safe-area-inset-bottom)}
+.bar::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(143,216,255,.55),transparent)}
+.bar .in{max-width:608px;margin:0 auto;height:var(--bar-h);padding:0 16px 0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar-left{display:flex;align-items:baseline;gap:12px;white-space:nowrap;font-size:13px;color:var(--mist)}
+.bar-num{font-family:var(--mono);font-size:20px;letter-spacing:.04em;color:var(--water);font-variant-numeric:tabular-nums}
+.mini{height:44px;padding:0 20px;display:inline-flex;align-items:center;border-radius:12px;background:var(--btn);color:var(--btn-ink);
+  font-size:14px;font-weight:700;letter-spacing:.06em;text-decoration:none;white-space:nowrap;
+  box-shadow:0 0 0 1px rgba(143,216,255,.35),0 6px 20px rgba(92,200,255,.22);transition:transform .15s var(--ease)}
+.mini:active{transform:translateY(1px)}
+.mini.off{background:rgba(255,255,255,.06);color:var(--mist);box-shadow:inset 0 0 0 1px rgba(143,216,255,.14);pointer-events:none}
+html[data-state="closed"] .bar{display:none}
+
+@media (max-width:360px){
+  h1{font-size:27px}
+  .hero .wrap{padding-top:20px}
+}
+@media (min-width:768px){
+  :root{--pad:120px}
+  body{font-size:17px}
+  .card p,.qa .a,.voice{font-size:16px}
+  .hero .wrap{padding-top:56px;padding-bottom:112px}
+  .pic.cut{width:220px}
+}
+@media (prefers-reduced-motion:reduce){
+  .rise{animation:none;opacity:1;transform:none}
+  .cap-screen > span::after{animation:none}
+  .btn,.mini{transition:none}
+}
+</style>
+</head>
+<body>
+
+<main>
+<section class="sec hero grid">
+<canvas id="dust" aria-hidden="true"></canvas>
+<div class="wrap">
+<figure class="thumb m-top d-right narrow hero-thumb"><img src="img/hero.webp" alt="" width="1200" height="675" style="object-position:38% 40%" decoding="async"><figcaption><h1 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">投稿の準備は、</span><span class="tl strong" style="--fs:9.33vw;--fd:48px"><em class="hot red xl">Museに任せる</em>。</span></h1></figcaption></figure>
+<p class="lead rise"><span class="ln"><span class="w">あなたは、伝えたいことに力を使う。</span></span><span class="ln"><span class="w">リサーチから下書き、予約投稿まで回す</span><span class="w">「Threadsダッシュボード」</span></span></p>
+<p class="chip rise"><i aria-hidden="true"></i>テスター募集</p>
+<div class="cta">
+  <a class="btn js-form if-ready" data-when="open" href="#">応募する</a>
+  <span class="btn off if-pending" data-when="open" aria-disabled="true">準備中</span>
+  <span class="btn off" data-when="closed" aria-disabled="true">受付は終了しました</span>
+</div>
+</div>
+</section>
+
+<section class="sec face">
+<div class="wrap prose">
+<p><span class="ln">Threadsを続けたいなら、投稿の準備を、ぜんぶ自分でやるのはやめてください。</span></p>
+<p><span class="ln">……いきなり何を言ってるの、と思いますよね（笑）。</span><span class="ln">でも、本気です。</span></p>
+<ul class="beats"><li>リサーチ。</li><li>ナレッジ収集。</li><li>下書き。</li><li>分析。</li></ul>
+<p><span class="ln">どれも大事な仕事です。</span><span class="ln">ただ、準備を終えたころには、伝えたかったことをじっくり考える余裕が残っていない。</span><span class="ln">そんな日が重なっているなら、任せられる仕事を見直してみませんか。</span></p>
+<p><span class="ln">もし、あなたが眠っている間に、リサーチもナレッジ収集も下書きも進めておいてくれる相棒がいたら。</span></p>
+<p><span class="ln">朝、集まったネタを読んで、「この話なら、自分の経験も伝えられそう」と考える。</span><span class="ln">下書きを読みながら、伝えたいことを足して、しっくりくる言葉に直していく。</span><strong class="ln em em-red"><span class="w">準備ではなく、</span><span class="w">発信の中身に</span><span class="w">力を使えるように</span><span class="w">なります。</span></strong></p>
+<p><span class="ln">その相棒が、AIのMuseです。</span><span class="ln">そして、Museの毎晩の仕事をひとつの画面にまとめたのが「Threadsダッシュボード」です。</span></p>
+</div>
+</section>
+
+<section class="sec ">
+<div class="wrap prose">
+<span class="mark" aria-hidden="true"></span><h2><span class="w">こんな毎日に</span><span class="w">なっていませんか</span></h2>
+<p><span class="ln">投稿を続けようと決めたのに、気づくとこうなっている。</span></p>
+<ul class="voices"><li class="voice">「リサーチしているうちに、書く時間がなくなった」</li><li class="voice">「伸びている投稿は集めた。でも、自分が何を書くかは決まらない」</li><li class="voice">「書くので精いっぱいで、分析まで手が回らない」</li><li class="voice">「分析したいのに、また次のネタ探しに追われている」</li></ul>
+<p><span class="ln">投稿を届けたくて始めたのに、準備をこなすだけで一日が終わってしまう。</span><span class="ln">それでは、続けるのが苦しくなりますよね。</span></p>
+</div>
+</section>
+
+<section class="sec face">
+<div class="wrap prose">
+<figure class="thumb m-top d-top"><img src="img/eyes.webp" alt="" width="1200" height="675" style="object-position:50% 60%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">続かないのは、</span><span class="tl strong" style="--fs:7.64vw;--fd:64px"><em class="hot red l">あなたのせいじゃない</em>。</span></h2></figcaption></figure>
+<p><span class="ln">投稿が続かないと、「もっとがんばらなきゃ」と思ってしまいませんか。</span></p>
+<p><span class="ln">でも、リサーチ、ナレッジ収集、下書き、分析、予約投稿。</span><span class="ln">その全部を、仕事や家のことの合間にひとりで続けようとしているなら、負担は小さくありません。</span></p>
+<p><span class="ln">センスや根性を疑う前に、毎日の準備の抱え方を見直してみてください。</span></p>
+<p><span class="ln">自分で抱えていた仕事を任せられたら、伝えたいことを考える余裕は、つくれます。</span></p>
+</div>
+</section>
+
+<section class="sec ">
+<div class="wrap prose">
+<figure class="thumb m-bottom d-bottomleft"><img src="img/enter.webp" alt="" width="1200" height="675" style="object-position:42% 50%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">スイッチ、オン！</span><span class="tl strong" style="--fs:7.64vw;--fd:54px"><em class="hot sky xl">準備はMuseが回す</em>。</span></h2></figcaption></figure>
+<p><span class="ln">そこで、毎日の準備をMuseに任せてみませんか。</span></p>
+<p><span class="ln">「AIには、もう下書きを頼んでいる」という人もいますよね。</span><span class="ln">それでも、リサーチやAIへの指示は、毎回あなたが考えていませんか。</span></p>
+<p><span class="ln">ここで任せたいのは、その毎日くり返している準備です。</span></p>
+<p><span class="ln">Threadsダッシュボードでは、Museが毎晩、決まった準備を進めておきます。</span></p>
+<ul class="beats"><li>リサーチ。</li><li>ナレッジ収集。</li><li>下書き。</li><li>分析。</li></ul>
+<p><span class="ln">あなたが声をかけなくても、毎晩です。</span><span class="ln">出す投稿を決めて予約しておけば、その時刻に投稿までしてくれます。</span></p>
+<p><span class="ln">「何を書こう」と探し続ける代わりに、「この話に、自分なら何を足せるだろう」と考える。</span><span class="ln">準備を任せて生まれた余裕を、そこに使ってほしいんです。</span></p>
+</div>
+</section>
+
+<section class="sec face">
+<div class="wrap prose">
+<figure class="thumb m-bottom d-left"><img src="img/profile.webp" alt="" width="1200" height="675" style="object-position:70% 40%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">朝には、</span><span class="tl strong" style="--fs:8.40vw;--fd:44px"><em class="hot white l">下書きがそろってる</em>。</span></h2></figcaption></figure>
+<p><span class="ln">たとえば、朝の投稿づくりを思い浮かべてみてください。</span></p>
+<p><span class="ln">ダッシュボードを開く。</span><span class="ln">夜のうちにリサーチした投稿とナレッジ、それをもとにした下書きが、もうそろっている。</span></p>
+<ul class="voices"><li class="voice">「この話なら、自分の経験も添えられそう」</li><li class="voice">「ここは、いつもの自分の言い方に直したい」</li></ul>
+<p><span class="ln">そう考えながら読んで、言葉を整えて、出す投稿を決めたら予約投稿に入れる。</span><span class="ln">あとは、投稿の時刻を気にせず過ごせます。</span></p>
+<p><span class="ln">夜、ネタを探してThreadsの中をさまよう時間が減る。</span><span class="ln">空いた時間で、コメントにていねいに返したり、プロフィールを見直したり、次に話したいことをじっくり考えたりできます。</span></p>
+<p><span class="ln">準備を終えることだけに追われず、伝えたかった話に向き合う。</span><span class="ln">そんなふうに、Threadsに使う時間を変えてみませんか。</span></p>
+</div>
+</section>
+
+<section class="sec ">
+<div class="wrap prose">
+<figure class="thumb m-top d-right"><img src="img/road.webp" alt="" width="1200" height="675" style="object-position:35% 50%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">このまま、</span><span class="tl strong" style="--fs:9.60vw;--fd:62px"><em class="hot white xl">ぜんぶ抱える？</em></span></h2></figcaption></figure>
+<p><span class="ln">反対に、今のやり方のままだと、どうなるでしょう。</span></p>
+<p><span class="ln">夜、ネタが決まらないまま、時間だけが過ぎていく。</span><span class="ln">なんとか出した投稿も、分析する余裕がないまま、次の準備に追われる。</span><span class="ln">忙しい日が続いて投稿が止まり、取り戻そうとして、睡眠を削る。</span></p>
+<p><span class="ln">そして気づけば、「何を伝えたいか」を考える時間が、いちばん後回しになっている。</span></p>
+<p><span class="ln">時間が足りないのは、たぶんこれからも同じです。</span><strong class="ln em"><span class="w">でも、</span><span class="w">準備のやり方は</span><span class="w">見直せます。</span></strong></p>
+</div>
+</section>
+
+<section class="sec face changes">
+<div class="wrap prose">
+<span class="mark" aria-hidden="true"></span><h2><span class="w">Threadsダッシュボードで</span><span class="w">変わること</span></h2>
+<p><span class="ln">毎日の準備がどう変わるのか、見ていきましょう。</span></p>
+<div class="glass card"><h3><span class="w">リサーチは、</span><span class="w">Museが毎晩すませておく</span></h3>
+<p><span class="ln">Museが毎晩、今伸びている投稿をリサーチしておきます。</span><span class="ln">あなたは、探すところからではなく、集まった投稿を読むところから始められます。</span><span class="ln">探していた時間を、「どうしてこれが読まれたんだろう」と考える時間に回せます。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">ナレッジが、</span><span class="w">たまっていく</span></h3>
+<p><span class="ln">投稿のネタになるナレッジも、Museが調べてためていきます。</span><span class="ln">読んでいて、「自分もここでつまずいた」「この話には、別の見方もある」と感じることはありませんか。</span><span class="ln">その気づきから、あなたが話したいことを考えられます。</span><span class="ln">何も浮かばないまま画面を眺める代わりに、考えるきっかけとして使ってください。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">下書きから考え始められる</span></h3>
+<p><span class="ln">リサーチとナレッジをもとに、Museが下書きを用意しておきます。</span><span class="ln">書きたいことはあるのに、最初の一文が出てこない日はありますよね。</span><span class="ln">下書きを読んで、「この順番なら伝わりそう」「ここには自分の経験を足したい」と考える。</span><span class="ln">しっくりこないところは、あなたの考えに合うように直していく。</span><span class="ln">最初の文章をひねり出すところからではなく、伝えたい話に整えるところから取り組めます。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">予約しておけば、</span><span class="w">投稿までおまかせ</span></h3>
+<p><span class="ln">出す投稿が決まったら、予約しておくだけ。</span><span class="ln">あとはその時刻に、ダッシュボードが投稿してくれます。</span><span class="ln">投稿の時間に合わせてスマホを開く必要は、もうありません。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">分析を、</span><span class="w">次の一本につなげられる</span></h3>
+<p><span class="ln">これまでの投稿の分析も、Museがまとめておきます。</span><span class="ln">投稿して終わりにせず、どの投稿に反応があったかを確かめられます。</span><span class="ln">「この話題は、もう少し掘り下げたい」「次は、違う伝え方を試してみようか」。</span><span class="ln">分析を見て終わりにせず、次の投稿を考える材料として使ってください。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">最後に決めるのは、</span><span class="w">あなた</span></h3>
+<p><span class="ln">準備を任せても、発信まで手放すわけではありません。</span><span class="ln">「この話は伝えたい」「この言い方は自分には合わない」。</span><span class="ln">そう感じたことを、そのまま文章に反映してください。</span><span class="ln">どの下書きを出すかも、いつ出すかも、決めるのはあなたです。</span></p>
+</div>
+</div>
+</section>
+
+<section class="sec ">
+<div class="wrap prose">
+<figure class="thumb m-top d-right"><img src="img/stairs.webp" alt="" width="1200" height="675" style="object-position:35% 50%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl strong" style="--fs:9.60vw;--fd:76px"><em class="hot red xl">一緒に</em>、</span><span class="tl" style="--fs:6.80vw;--fd:40px">作りませんか。</span></h2></figcaption></figure>
+<p><span class="ln">Threadsダッシュボードは、まだ完成していません。</span><span class="ln">だから今回は、売るのではなく、一緒に作ってくれるテスターさんを募集します。</span></p>
+<p><span class="ln">オプチャでテスターの話を少しだけ出したときには、こんな声が届きました。</span></p>
+<ul class="voices"><li class="voice">「絶対みたいです」</li><li class="voice">「是非是非是非是非是非お願い致します」</li><li class="voice">「是非テスターになりたいです！」</li></ul>
+<p><span class="ln">ありがとうございます！！ お待たせしました。</span></p>
+<div class="glass card"><h3><span class="w">完成前のダッシュボードを、</span><span class="w">自分のThreadsで試せる</span></h3>
+<p><span class="ln">説明を読んで「便利そう」と思うだけでは、自分の投稿づくりにどう役立つかまでは分かりません。</span><span class="ln">毎晩の準備をMuseに任せると、自分の取り組み方がどう変わるのか。</span><span class="ln">あなたのThreadsで、ひと足先に確かめてみてください。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">下書きから、</span><span class="w">自分の話を考えてみる</span></h3>
+<p><span class="ln">ナレッジを読んだとき、話したいことが浮かぶか。</span><span class="ln">下書きがあると、自分の経験を足して書き進められるか。</span><span class="ln">ただ文章が用意されるだけでなく、それを自分の発信にどう使えるかまで、実際の投稿づくりで試せます。</span></p>
+</div>
+<div class="glass card"><h3><span class="w">分析を、</span><span class="w">次の投稿に使ってみる</span></h3>
+<p><span class="ln">投稿を続けるだけで精いっぱいだと、分析は後回しになりがちですよね。</span><span class="ln">Museの分析をもとに、次に深めたい話や、試したい伝え方が見えてくるか。</span><span class="ln">リサーチから予約投稿、分析まで、自分の発信に役立つかを確かめられます。</span></p>
+</div>
+</div>
+</section>
+
+<section class="sec face">
+<div class="wrap prose">
+<figure class="thumb m-top d-left"><img src="img/cafe.webp" alt="" width="1200" height="675" style="object-position:68% 50%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">浮いた時間、</span><span class="tl strong" style="--fs:8.60vw;--fd:64px"><em class="hot white l">何に使う？</em></span></h2></figcaption></figure>
+<p><span class="ln">投稿の準備に、毎日どれくらいの時間を使っているでしょうか。</span></p>
+<p><span class="ln">リサーチ、ナレッジ収集、下書き、分析、予約投稿。</span><span class="ln">ひとつひとつは短くても、毎日続ければ、ひと月でかなりの時間になります。</span></p>
+<p><span class="ln">準備も、発信には欠かせません。</span><span class="ln">ただ、そのせいで「読む人に何を伝えるか」を考える時間がなくなっているなら、任せられる部分は任せていいはずです。</span></p>
+<ul class="beats"><li>たとえば、読者からのコメントを読み返す。</li><li>自分がつまずいた経験を整理する。</li><li>下書きに、自分だから話せることを足す。</li></ul>
+<p><span class="ln">どこで迷って、何を試して、どう考えたのか。</span><span class="ln">そうした経験を、下書きに足してみてください。</span><span class="ln">集めたナレッジだけでは書けない、あなたの話になります。</span></p>
+<p><span class="ln">自分でできる作業でも、任せたほうがいいことはあります。</span><strong class="ln em"><span class="w">空いた時間を、</span><span class="w">あなたにしか</span><span class="w">書けないことに</span><span class="w">使えるからです。</span></strong></p>
+<p><span class="ln">あなたなら、準備に使っている時間を、何に使いたいですか。</span></p>
+</div>
+</section>
+
+<section class="sec ">
+<div class="wrap prose">
+<figure class="thumb m-bottom d-left"><img src="img/turn.webp" alt="" width="1200" height="675" style="object-position:68% 45%" loading="lazy" decoding="async"><figcaption><h2 class="tt"><span class="tl" style="--fs:6.80vw;--fd:40px">読むより、</span><span class="tl strong" style="--fs:9.60vw;--fd:72px"><em class="hot sky xl">使ってみて</em>。</span></h2></figcaption></figure>
+<p><span class="ln">「便利そう。でも、自分のThreadsではどうだろう」</span></p>
+<p><span class="ln">そこが気になっているなら、朝、下書きを読んでいる自分を思い浮かべてみてください。</span><span class="ln">どんな経験を足したいですか。</span><span class="ln">準備を任せて空いた時間で、何をしたいですか。</span></p>
+<p><span class="ln">今回は、その使い心地を実際に確かめながら、一緒に作ってくれるテスターの募集です。</span></p>
+<p><span class="ln">説明を読んで終わりにせず、自分の発信で試してみたい。</span><strong class="ln em em-red"><span class="w">そう思ったなら、</span><span class="w">今、</span><span class="w">応募してください。</span></strong></p>
+</div>
+</section>
+
+<section class="sec face">
+<div class="wrap prose">
+<span class="mark" aria-hidden="true"></span><h2><span class="w">最後に</span></h2>
+<p><span class="ln">準備に追われて、伝えたいことを考える時間がなくなっている。</span><span class="ln">もしそう感じているなら、そのやり方は変えられます。</span></p>
+<p><span class="ln">毎晩の準備はMuseに任せて、あなたは「何を伝えるか」に力を使う。</span><strong class="ln em"><span class="w">準備をMuseに任せる</span><span class="w">毎日を、</span><span class="w">一緒に</span><span class="w">作っていきませんか。</span></strong></p>
+<p><span class="ln">使ってみたいと思ったら、下のボタンから応募してください。</span></p>
+<div class="cta">
+  <a class="btn js-form if-ready" data-when="open" href="#">応募する</a>
+  <span class="btn off if-pending" data-when="open" aria-disabled="true">準備中</span>
+  <span class="btn off" data-when="closed" aria-disabled="true">受付は終了しました</span>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="ft" aria-hidden="true"><div class="in"></div></footer>
+
+<!-- 下に常に出る帯 -->
+<div class="bar">
+  <div class="in">
+    <p class="bar-left" data-when="open">残り<span class="bar-num js-clock">00:00:00</span></p>
+    <a class="mini js-form if-ready" data-when="open" href="#">応募する</a>
+    <span class="mini off if-pending" data-when="open" aria-disabled="true">準備中</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const root = document.documentElement;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* 応募フォーム：本物の URL（https://…）が入っている時だけ押せる */
+  const url = (FORM_URL || "").trim();
+  const ready = /^https:\/\/\S+$/.test(url) && !/X{4,}/.test(url);
+  root.dataset.form = ready ? "ready" : "pending";
+  document.querySelectorAll(".js-form").forEach(a => {
+    if (ready) a.href = url;
+    else { a.removeAttribute("href"); a.addEventListener("click", e => e.preventDefault()); }
+  });
+
+  /* 時刻：受付中 → 終了後。?now=2026-11-22T08:59:50+09:00 で試せる。PREVIEW の時は受付中に固定 */
+  const E = Date.parse(END_AT);
+  let offset = 0;
+  const q = new URLSearchParams(location.search).get("now");
+  if (q) { const t = Date.parse(q); if (!isNaN(t)) offset = t - Date.now(); }
+  const now = () => Date.now() + offset;
+  const fmt = ms => { const s = Math.max(0, Math.floor(ms / 1000));
+    const p = n => String(n).padStart(2, "0");
+    return p(Math.floor(s / 3600)) + ":" + p(Math.floor(s % 3600 / 60)) + ":" + p(s % 60); };
+  function tick(){
+    const left = E - now();
+    const st = (PREVIEW || left > 0) ? "open" : "closed";
+    if (root.dataset.state !== st) root.dataset.state = st;
+    const txt = (PREVIEW && left <= 0) ? "24:00:00" : fmt(left);
+    document.querySelectorAll(".js-clock").forEach(el => el.textContent = txt);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* 表紙の粒 */
+  const cv = document.getElementById("dust");
+  if (cv) {
+    const hero = cv.parentElement, cx = cv.getContext("2d");
+    let W = 0, H = 0, dots = [], run = false, last = 0;
+    const size = () => {
+      const r = hero.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+      W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0);
+      dots = Array.from({ length: W >= 768 ? 72 : 36 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 1 + Math.random(),
+        a: .12 + Math.random() * .38, v: 6 + Math.random() * 6 }));
+      draw(0);
+    };
+    const draw = dt => {
+      cx.clearRect(0, 0, W, H);
+      for (const p of dots) {
+        p.y -= p.v * dt; if (p.y < -4) { p.y = H + 4; p.x = Math.random() * W; }
+        cx.globalAlpha = p.a; cx.fillStyle = "#8FD8FF"; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.283); cx.fill();
+      }
+    };
+    const loop = t => { if (!run) return; const dt = last ? Math.min((t - last) / 1000, .05) : 0; last = t; draw(dt); requestAnimationFrame(loop); };
+    size();
+    if (!reduce && "IntersectionObserver" in window) {
+      new IntersectionObserver(es => es.forEach(e => { run = e.isIntersecting; last = 0; if (run) requestAnimationFrame(loop); })).observe(hero);
+    }
+    addEventListener("resize", size);
+  }
+})();
+</script>
+</body>
+</html>
