@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>オプチャ限定プレゼント｜フブキ</title>
+<meta name="description" content="フブキのThreads攻略塾で配っているプレゼントのまとめです。">
+<script>
+/* ===== プレゼントの一覧（ここだけ直せば切り替わる） =====
+   status  : '配布中'（今もらえる）／'終了'（「期間限定」に出る。大きな「配布終了」とリクエストボタン）
+   isNew   : true で NEW の札
+   keyword : 公式LINEに送る言葉。空 '' の間は「キーワードは近日お知らせ」と出る（確定：スタンプ「らいん」・Fable 5「クロード」・注意点「ちゅうい」・レター「むりょう」・コツ「とうこう」・Muse「ミューズ」。全部確定）
+   hint    : キーワードの注意（例：カタカナ4文字）
+   period  : 終了品だけ「配布：〜」で出す */
+var GIFTS = [
+  { status:'配布中', isNew:true, name:'LINEスタンプ作成Skill', keyword:'らいん', hint:'ひらがな3文字',
+    text:'Museに入れるだけで、LINEスタンプづくりを最後まで進めてくれるSkillです。' },  /* 名前・キーワード・説明は確定（ユーザー 11/21） */
+  { status:'配布中', name:'Muse初心者ガイド', keyword:'ミューズ', hint:'カタカナ',
+    text:'無料で使えるAI『Muse』を、初心者さんでも今日から使い倒せるガイドです。' },
+  { status:'配布中', name:'note売れる無料レターテンプレート', keyword:'むりょう', hint:'ひらがな4文字',
+    text:'noteの無料部分（レター）を、埋めていくだけで書けるテンプレートです。' },
+  { status:'配布中', name:'Claudeでnoteを作成する際の注意点', keyword:'ちゅうい', hint:'ひらがな4文字',
+    text:'Claudeでnoteを作るときに、気をつけたい点をまとめた記事です。' },
+  { status:'配布中', name:'Threads投稿を伸ばすコツ', keyword:'とうこう', hint:'ひらがな4文字',
+    text:'見られる投稿に変わるコツ＋投稿を採点するAIつきのnoteです。' },
+  { status:'配布中', name:'最高性能AI「Fable 5」が使えるうちにやっておくべきこと', keyword:'クロード', hint:'カタカナ',
+    text:'読みながらnoteの設計まで進む、プロンプト入りのnoteです。' },
+
+  { status:'終了', name:'ローンチの型', period:'8/11〜8/14・9/18〜9/21',
+    text:'はじめてのnoteを出す前に読む、ローンチの流れです。' },
+  { status:'終了', name:'Museに丸投げ図鑑', period:'11/15〜11/18',
+    text:'Museに頼める事を100種類まとめた、選んで貼るだけの図鑑。' },
+  { status:'終了', name:'コラボセミナー アーカイブ', period:'8/21〜8/23',
+    text:'『AIに丸投げでマネタイズ』の録画と、参加特典。' }
+];
+var LINE_ADD  = 'https://lin.ee/Q23Jx5B';
+var LINE_HELP = 'https://app.notion.com/p/LINE-3b9f08ff0bad800da7b4c752e6c951c7';  /* 公式LINEに入れない場合の案内 */
+/* リクエストの送り先（Googleフォーム。回答はシート「プレゼント_リクエスト」）。空の間は「準備中」と出る */
+var REQ_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSetP3_aK8ifUqslALDBdX_U6cML5a7DBeev5tD0Q-9acSrgvg/formResponse';
+var REQ_ENTRY_ID    = 'entry.376220839';
+</script>
+<style>
+:root{
+  --navy:#0B1F3A; --navy2:#16375F; --ink:#1B2B44; --sub:#52637A; --mute:#8A97AA;
+  --bg:#E3F1FB; --bg2:#D2E8F8; --sky:#EEF7FD; --line:#BFD9EE; --blue:#2F8FD0; --lblue:#8FCBEF; --red:#D7263D; --green:#06C755;
+  --ease:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Yu Gothic","YuGothic","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;font-size:16px;line-height:1.8;letter-spacing:.03em;-webkit-text-size-adjust:100%;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.en{font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:.16em;font-size:12px;color:var(--blue)}
+
+/* 上の帯 */
+.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:.14em;color:var(--navy);text-decoration:none;font-size:17px}
+.logo b{color:var(--red)}
+.nav a{position:relative;font-size:13px;color:var(--sub);text-decoration:none;margin-left:28px;white-space:nowrap}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.nav a:hover{color:var(--navy)}
+.nav a:hover::after{transform:scaleX(1)}
+
+/* 表紙（サムネ型・画像はここだけ） */
+.hero{padding:40px 0 8px}
+.cover{position:relative;border-radius:20px;overflow:hidden;min-height:460px;display:flex;align-items:center;background:#0B1F3A;box-shadow:0 18px 44px rgba(11,31,58,.22)}
+.cover-bg{position:absolute;inset:0;background:url(img/hero.jpg) right center/cover no-repeat;animation:zoom 16s ease-in-out infinite alternate}
+@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.07) translateX(-1%)}}
+.cover::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,17,34,.92) 0%,rgba(7,17,34,.78) 38%,rgba(7,17,34,0) 68%)}
+.cover::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(191,226,247,.22) 48%,transparent 60%);transform:translateX(-100%);animation:sweep 1.6s .9s var(--ease) both}
+@keyframes sweep{to{transform:translateX(100%)}}
+.cover-in{position:relative;z-index:2;padding:48px 52px;max-width:600px;color:#fff}
+.cover-in>*{animation:rise .8s var(--ease) both}
+.cover-in>*:nth-child(2){animation-delay:.1s}.cover-in>*:nth-child(3){animation-delay:.2s}.cover-in>*:nth-child(4){animation-delay:.35s}.cover-in>*:nth-child(5){animation-delay:.5s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.cover .pill{display:inline-block;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:4px 16px;color:#BFE2F7}
+.cover .sub{margin:16px 0 4px;font-size:16px;font-weight:700;color:#BFE2F7}
+.cover h1{margin:0;font-size:54px;line-height:1.25;font-weight:900;letter-spacing:.04em;text-shadow:0 4px 18px rgba(0,0,0,.45)}
+.cover h1 .r{background:linear-gradient(100deg,#FF5468 0%,#FF5468 40%,#FFD0D6 50%,#FF5468 60%,#FF5468 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;animation:shine 5s 1.2s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+.cover p{margin:16px 0 24px;font-size:15px;color:#DCEBF7}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .35s var(--spring),box-shadow .3s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.97)}
+.btn-main{background:#fff;color:var(--navy);padding:15px 34px;font-size:15px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.btn-main .arw{display:inline-block;transition:transform .3s var(--ease)}
+.btn-main:hover .arw{transform:translateY(3px)}
+
+/* 節 */
+section{padding:76px 0}
+#limited{background:var(--bg2)}
+.head{text-align:center;margin-bottom:40px}
+.head h2{position:relative;display:inline-block;margin:8px 0 14px;padding-bottom:14px;font-size:28px;color:var(--navy);letter-spacing:.06em;line-height:1.5}
+.head h2::after{content:"";position:absolute;left:50%;bottom:0;width:56px;height:4px;margin-left:-28px;border-radius:2px;background:linear-gradient(90deg,var(--navy) 0 50%,var(--red) 50% 100%);transform:scaleX(0);transition:transform .7s .25s var(--ease)}
+.head.in h2::after{transform:scaleX(1)}
+.head p{margin:0;color:var(--sub);font-size:14px}
+.tohow{color:var(--blue);font-weight:700;white-space:nowrap}
+
+/* カード */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.card{position:relative;background:#fff;border:1px solid var(--line);border-left:6px solid var(--navy);border-radius:14px;box-shadow:0 2px 0 rgba(11,31,58,.04),0 8px 24px rgba(11,31,58,.08);padding:26px 26px 22px;display:flex;flex-direction:column;overflow:hidden;transition:transform .4s var(--spring),box-shadow .3s,border-color .3s}
+.card.is-new{border-left-color:var(--red)}
+.card::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;pointer-events:none;background:linear-gradient(105deg,transparent,rgba(143,203,239,.28),transparent);transform:skewX(-12deg);opacity:0}
+.card:hover{transform:translateY(-5px);box-shadow:0 2px 0 rgba(11,31,58,.04),0 18px 40px rgba(11,31,58,.16);border-color:var(--lblue)}
+.card:hover::after{animation:sheen .9s var(--ease)}
+@keyframes sheen{0%{left:-60%;opacity:1}100%{left:130%;opacity:1}}
+.card h3{margin:0 0 8px;font-size:20px;line-height:1.55;color:var(--navy)}
+.card p{margin:0;color:var(--sub);font-size:14px;line-height:1.85}
+.new{display:inline-block;vertical-align:3px;margin-right:8px;background:var(--red);color:#fff;font-family:"Segoe UI",Arial,sans-serif;font-size:11px;font-weight:800;letter-spacing:.12em;border-radius:4px;padding:1px 8px;line-height:1.6;animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{50%{box-shadow:0 0 0 4px rgba(215,38,61,.18)}}
+
+/* キーワード（濃い札＋はっきり押せるコピー） */
+.kw{margin-top:auto;padding-top:18px}
+.kwbox{display:flex;align-items:center;gap:14px;background:var(--navy);border-radius:12px;padding:12px 12px 12px 18px;color:#fff}
+.kwtxt{flex:1;min-width:0}
+.kwlabel{display:block;font-size:11px;letter-spacing:.14em;color:var(--lblue);line-height:1.4}
+.kwbox code{font-family:inherit;font-size:24px;font-weight:900;color:#fff;letter-spacing:.1em;line-height:1.35}
+.kwbox .hint{margin-left:8px;font-size:12px;color:#BFE2F7;white-space:nowrap}
+.copy{flex:none;display:inline-flex;align-items:center;gap:6px;border:0;background:#fff;color:var(--navy);border-radius:10px;padding:10px 16px;font:inherit;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #8FCBEF;transition:transform .25s var(--spring),box-shadow .2s,background .2s}
+.copy svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.copy:hover{background:#EAF6FD;transform:translateY(-1px)}
+.copy:active{transform:translateY(2px);box-shadow:0 1px 0 #8FCBEF}
+.copy.done{background:var(--green);color:#fff;box-shadow:0 3px 0 #049A42;animation:pop .45s var(--spring)}
+@keyframes pop{0%{transform:scale(.88)}55%{transform:scale(1.08)}100%{transform:scale(1)}}
+.kwbox.soon{justify-content:center;background:#E7EEF5;color:var(--sub);font-size:14px;padding:16px}
+.manual{display:block;width:100%;margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;color:var(--ink);background:#fff;text-align:center}
+
+/* 期間限定 */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.done-card{border-left-color:#A9B6C4;background:#FBFDFF}
+.done-card h3{font-size:18px;color:#3F4F66}
+.descbox{position:relative;min-height:112px}
+.soldout{position:absolute;left:-60px;right:-60px;top:16px;pointer-events:none}
+.soldout span{display:block;transform:rotate(-5deg);background:var(--red);color:#fff;text-align:center;font-weight:900;font-size:38px;line-height:1.5;letter-spacing:.4em;padding:6px 0 6px .4em;box-shadow:0 8px 20px rgba(215,38,61,.28);border-top:3px solid #fff;border-bottom:3px solid #fff}
+.js .rv .soldout span{opacity:0;transform:rotate(-5deg) scale(1.9)}
+.js .rv.in .soldout span{animation:stamp .55s var(--spring) both;animation-delay:calc(var(--d,0s) + .35s)}
+@keyframes stamp{0%{opacity:0;transform:rotate(-5deg) scale(1.9)}60%{opacity:1;transform:rotate(-5deg) scale(.94)}100%{opacity:1;transform:rotate(-5deg) scale(1)}}
+.done-card .per{margin-top:14px;font-size:12px;color:var(--sub);text-align:center}
+.btn-req{width:100%;margin-top:8px;background:var(--navy);color:#fff;padding:12px 16px;font-size:14px}
+.btn-req:hover{background:var(--navy2);box-shadow:0 8px 18px rgba(11,31,58,.25)}
+.btn-req[disabled]{background:#E7EEF5;color:var(--sub);cursor:default;transform:none;box-shadow:none}
+
+/* 受け取り方（最後に詳しく） */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-top:5px solid var(--lblue);border-radius:14px;box-shadow:0 8px 24px rgba(11,31,58,.08);padding:28px 24px;transition:transform .4s var(--spring),box-shadow .3s}
+.step:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(11,31,58,.14)}
+.step .num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:0 auto 6px;border-radius:50%;background:var(--navy);color:#fff;font-family:"Segoe UI",Arial,sans-serif;font-weight:800;font-size:18px}
+.step .en{display:block;text-align:center}
+.step h3{margin:4px 0 10px;font-size:17px;color:var(--navy);text-align:center}
+.step p{margin:0;font-size:14px;color:var(--sub);line-height:1.85}
+.join{position:relative;overflow:hidden;margin-top:32px;background:linear-gradient(120deg,var(--navy) 0%,#123A66 100%);border-radius:20px;color:#fff;text-align:center;padding:48px 24px}
+.join::before{content:"";position:absolute;width:420px;height:420px;right:-140px;top:-180px;border-radius:50%;background:radial-gradient(circle,rgba(143,203,239,.28),transparent 68%);animation:drift 14s ease-in-out infinite alternate}
+.join::after{content:"";position:absolute;width:360px;height:360px;left:-140px;bottom:-200px;border-radius:50%;background:radial-gradient(circle,rgba(215,38,61,.22),transparent 68%);animation:drift 18s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(-60px,50px) scale(1.15)}}
+.join>*{position:relative;z-index:1}
+.join h3{margin:0 0 8px;font-size:22px;letter-spacing:.06em}
+.join p{margin:0 0 24px;color:#C9DDF0;font-size:14px}
+.btn-add{background:var(--green);color:#fff;padding:16px 48px;font-size:16px;box-shadow:0 8px 20px rgba(0,0,0,.2);animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 8px 34px rgba(6,199,85,.55)}}
+.help{margin-top:24px;font-size:13px;color:#C9DDF0}
+.btn-help{margin-top:8px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.7);padding:10px 28px;font-size:14px}
+.btn-help:hover{background:rgba(255,255,255,.1)}
+
+footer{background:#fff;border-top:1px solid var(--line);text-align:center;padding:32px 0;font-size:13px;color:var(--sub)}
+footer .logo{display:inline-block;margin-bottom:10px}
+footer a{margin:0 10px;text-decoration:none;display:inline-block;white-space:nowrap}
+footer small{display:block;margin-top:10px;color:var(--mute);font-size:11px}
+
+.toast{position:fixed;left:50%;bottom:28px;max-width:calc(100% - 32px);text-align:center;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;font-size:13px;padding:10px 20px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:20}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* スクロールで順に浮かぶ（JSが動く時だけ隠す） */
+.js .rv{opacity:0;transform:translateY(26px) scale(.97);transition:opacity .6s var(--ease),transform .7s var(--spring);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.js .card.rv.in:hover{transform:translateY(-5px)}
+.js .step.rv.in:hover{transform:translateY(-4px)}
+
+/* 動きを減らす設定の人には止める */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv,.js .rv .soldout span{opacity:1!important;transform:none!important}
+  .js .rv .soldout span{transform:rotate(-5deg)!important}
+  .cover::after{display:none}
+  .head h2::after{transform:scaleX(1)}
+}
+
+@media (max-width:900px){
+  .cover-in{padding:40px 32px}
+  .cover h1{font-size:44px}
+  .grid3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .logo{font-size:14px}
+  .nav a{margin-left:10px;font-size:12px}
+  .hero{padding:20px 0 0}
+  .cover{min-height:520px;align-items:flex-end}
+  .cover-bg{background-position:72% center}
+  .cover::before{background:linear-gradient(0deg,rgba(7,17,34,.95) 0%,rgba(7,17,34,.8) 55%,rgba(7,17,34,.2) 100%)}
+  .cover-in{padding:24px 20px}
+  .cover h1{font-size:32px}
+  .cover .sub{font-size:14px}
+  .cover p{font-size:13px}
+  section{padding:56px 0}
+  .head h2{font-size:22px}
+  .grid,.grid3,.steps{grid-template-columns:1fr}
+  .card{padding:22px 18px 18px}
+  .kwbox code{font-size:21px}
+  .kwbox .hint{display:block;margin-left:0}
+  .soldout span{font-size:32px}
+  .join{padding:36px 18px}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#">FUBUKI<b>.</b>GIFTS</a>
+  <nav class="nav"><a href="#now">今もらえる物</a><a href="#limited">期間限定</a><a href="#how">受け取り方</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="cover" role="img" aria-label="フブキ">
+    <div class="cover-bg"></div>
+    <div class="cover-in">
+      <span class="pill en">OPENCHAT GIFTS</span>
+      <p class="sub">フブキのThreads攻略塾</p>
+      <h1><span class="r">全部0円!!</span><br>オプチャ限定<br>プレゼント</h1>
+      <p>オプチャで配ってきたプレゼントを、ここにまとめました。<br>公式LINEにキーワードを送ると、受け取れます。</p>
+      <a class="btn btn-main" href="#now">今もらえるプレゼントを見る <span class="arw">↓</span></a>
+    </div>
+  </div>
+</div></div>
+
+<section id="now"><div class="wrap">
+  <div class="head rv">
+    <div class="en">NOW AVAILABLE</div>
+    <h2>今もらえるプレゼント</h2>
+    <p>ほしい物のキーワードを、公式LINEに送ってください!! <a class="tohow" href="#how">受け取り方を見る</a></p>
+  </div>
+  <div class="grid" id="nowList"></div>
+  <noscript><p style="text-align:center;color:#52637A">一覧の表示には、ブラウザのJavaScriptを有効にしてください。キーワードは公式LINEでもお伝えしています。</p></noscript>
+</div></section>
+
+<section id="limited"><div class="wrap">
+  <div class="head rv">
+    <div class="en">LIMITED</div>
+    <h2>期間限定</h2>
+    <p>もう一度ほしい物は「リクエストする」を押してください。リクエストが多ければ、再配布を考えます!!</p>
+  </div>
+  <div class="grid3" id="endList"></div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="head rv">
+    <div class="en">HOW TO GET</div>
+    <h2>受け取り方</h2>
+    <p>3ステップで受け取れます。</p>
+  </div>
+  <div class="steps">
+    <div class="step rv" style="--d:0s"><div class="num">1</div><span class="en">STEP 01</span><h3>公式LINEを追加</h3><p>下の緑のボタンから、フブキの公式LINEを友だち追加してください。</p></div>
+    <div class="step rv" style="--d:.1s"><div class="num">2</div><span class="en">STEP 02</span><h3>キーワードを送る</h3><p>ほしいプレゼントのキーワードを、公式LINEのトークに送ってください。PCなら「コピー」して貼るのがラクです。</p></div>
+    <div class="step rv" style="--d:.2s"><div class="num">3</div><span class="en">STEP 03</span><h3>トークに届く</h3><p>送ると、プレゼントがトークに届きます。届かないときは、オプチャで気軽に声をかけてください。</p></div>
+  </div>
+  <div class="join rv">
+    <h3>まずは、公式LINEを追加!!</h3>
+    <p>新しいプレゼントも、オプチャと公式LINEでお知らせします。</p>
+    <a class="btn btn-add" href="" id="addLine" target="_blank" rel="noopener">公式LINEを追加する</a>
+    <div class="help">公式LINEに入れない場合は</div>
+    <a class="btn btn-help" href="" id="helpLine" target="_blank" rel="noopener">追加できない場合の案内を見る</a>
+  </div>
+</div></section>
+
+<footer>
+  <a class="logo" href="#">FUBUKI<b>.</b>GIFTS</a>
+  <div><a href="#now">今もらえる物</a><a href="#limited">期間限定</a><a href="#how">受け取り方</a><a href="https://www.threads.com/@fubuki.0up" target="_blank" rel="noopener">Threads @fubuki.0up</a></div>
+  <small>© fubuki</small>
+</footer>
+
+<div class="toast" id="toast">コピーしました</div>
+
+<script>
+(function(){
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+  var COPY_ICON='<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>';
+  var now='', end='', ni=0, ei=0;
+  GIFTS.forEach(function(g,i){
+    if(g.status==='配布中'){
+      var kw = g.keyword
+        ? '<div class="kwbox"><div class="kwtxt"><span class="kwlabel">キーワード</span><code>'+esc(g.keyword)+'</code>'+(g.hint?'<span class="hint">'+esc(g.hint)+'</span>':'')+'</div>'+
+          '<button class="copy" type="button" data-copy="'+esc(g.keyword)+'">'+COPY_ICON+'<span>コピー</span></button></div>'
+        : '<div class="kwbox soon">キーワードは近日お知らせ</div>';
+      now+='<article class="card rv'+(g.isNew?' is-new':'')+'" style="--d:'+((ni++%2)*0.1)+'s"><h3>'+(g.isNew?'<span class="new">NEW</span>':'')+esc(g.name)+'</h3><p>'+esc(g.text)+'</p><div class="kw">'+kw+'</div></article>';
+    }else{
+      var did = store('req:'+g.name)==='1';
+      end+='<article class="card done-card rv" style="--d:'+((ei++%3)*0.12)+'s"><h3>'+esc(g.name)+'</h3>'+
+        '<div class="descbox"><p>'+esc(g.text)+'</p><div class="soldout" aria-label="配布終了"><span>配布終了</span></div></div>'+
+        '<div class="per">配布：'+esc(g.period)+'</div>'+
+        '<button class="btn btn-req" type="button" data-req="'+i+'"'+(did?' disabled':'')+'>'+(did?'リクエストしました！':'リクエストする')+'</button></article>';
+    }
+  });
+  document.getElementById('nowList').innerHTML=now;
+  document.getElementById('endList').innerHTML=end;
+  document.getElementById('addLine').href=LINE_ADD;
+  document.getElementById('helpLine').href=LINE_HELP;
+
+  /* スクロールで順に浮かぶ */
+  var items=[].slice.call(document.querySelectorAll('.rv'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    items.forEach(function(el){io.observe(el)});
+  }else{items.forEach(function(el){el.classList.add('in')})}
+
+  var toast=document.getElementById('toast'), t;
+  function show(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(t);t=setTimeout(function(){toast.classList.remove('on')},1800)}
+  function fallback(text){var a=document.createElement('textarea'),r=false;a.value=text;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{r=document.execCommand('copy')}catch(e){r=false}document.body.removeChild(a);return r}
+
+  document.addEventListener('click',function(e){
+    var r=e.target.closest('.btn-req');
+    if(r){
+      if(r.disabled) return;
+      var g=GIFTS[+r.getAttribute('data-req')];
+      if(!REQ_FORM_ACTION||!REQ_ENTRY_ID){show('リクエストの受付は準備中です。もう少しお待ちください');return}
+      r.disabled=true; r.textContent='送っています…';
+      var body=new URLSearchParams(); body.append(REQ_ENTRY_ID,g.name);
+      fetch(REQ_FORM_ACTION,{method:'POST',mode:'no-cors',body:body}).then(function(){
+        r.textContent='リクエストしました！'; store('req:'+g.name,'1'); show('「'+g.name+'」をリクエストしました！');
+      },function(){
+        r.disabled=false; r.textContent='リクエストする'; show('送れませんでした。時間をおいて、もう一度押してください');
+      });
+      return;
+    }
+    var b=e.target.closest('.copy'); if(!b) return;
+    var text=b.getAttribute('data-copy'), lab=b.querySelector('span');
+    function ok(){b.classList.remove('done');void b.offsetWidth;b.classList.add('done');lab.textContent='コピーしました';show('「'+text+'」をコピーしました');setTimeout(function(){b.classList.remove('done');lab.textContent='コピー'},1600)}
+    function ng(){show('コピーできませんでした。下の欄から選んでコピーしてください');var box=b.closest('.kw');if(!box.querySelector('.manual')){var i=document.createElement('input');i.className='manual';i.readOnly=true;i.value=text;box.appendChild(i);i.focus();i.select()}}
+    function fb(){fallback(text)?ok():ng()}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok,fb)}else{fb()}
+  });
+})();
+</script>
+</body>
+</html>
