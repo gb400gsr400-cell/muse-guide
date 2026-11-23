@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Threadsダッシュボード 説明書</title>
+<style>
+:root{
+  --bg:#f4f8fc; --card:#ffffff; --ink:#1f2a37; --sub:#5b6b7d; --line:#dbe6f1;
+  --accent:#3a8fd6; --accent-soft:#e6f2fc; --warn:#c2410c; --warn-soft:#fff3ea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10161d; --card:#18212b; --ink:#e6edf3; --sub:#9fb0c2; --line:#2a3846;
+    --accent:#7cc0f5; --accent-soft:#1b2c3c; --warn:#ffa36b; --warn-soft:#33241a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10161d; --card:#18212b; --ink:#e6edf3; --sub:#9fb0c2; --line:#2a3846;
+  --accent:#7cc0f5; --accent-soft:#1b2c3c; --warn:#ffa36b; --warn-soft:#33241a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+  font-size:16px;line-height:1.8;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+header{padding:8px 0 20px}
+header h1{font-size:1.45rem;line-height:1.4;margin:0 0 6px}
+header p{margin:0;color:var(--sub);font-size:.92rem}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+nav.toc a{font-size:.85rem;padding:6px 12px;border-radius:999px;background:var(--card);
+  border:1px solid var(--line);color:var(--ink);text-decoration:none}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 18px;margin:0 0 18px;scroll-margin-top:12px}
+section h2{font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+section h2 .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;
+  background:var(--accent);color:#fff;font-size:.9rem;flex:none}
+h3{font-size:1rem;margin:18px 0 6px}
+ul{margin:6px 0;padding-left:1.2em}
+li{margin:4px 0}
+p{margin:6px 0}
+.note{color:var(--sub);font-size:.9rem}
+.say{display:block;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;
+  padding:10px 12px;margin:8px 0;font-weight:600}
+.warn{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:8px;padding:10px 12px;margin:10px 0}
+.steps{list-style:none;padding:0;margin:0;counter-reset:s}
+.steps>li{position:relative;padding:0 0 14px 40px;margin:0;border-left:2px solid var(--line);margin-left:13px;padding-left:28px}
+.steps>li:last-child{border-left-color:transparent}
+.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:-14px;top:0;width:26px;height:26px;border-radius:50%;
+  background:var(--accent);color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+.steps>li>b{display:block;margin-bottom:2px}
+.time{list-style:none;padding:0;margin:8px 0}
+.time li{display:flex;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);margin:0}
+.time li:last-child{border-bottom:none}
+.time .t{flex:0 0 6.5em;color:var(--sub);font-size:.9rem}
+.time li.you{background:var(--accent-soft);border-radius:8px;padding:8px;border-bottom:none}
+.time li.you .t{color:var(--accent);font-weight:700}
+details{border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:0 14px}
+details summary{cursor:pointer;padding:12px 0;font-weight:700;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"＋";float:right;color:var(--sub)}
+details[open] summary::after{content:"－"}
+details>*:last-child{margin-bottom:12px}
+dl.qa{margin:0}
+dl.qa dt{font-weight:700;margin-top:12px}
+dl.qa dd{margin:2px 0 0 0}
+.tester{border:2px solid var(--accent)}
+details.first{background:var(--accent-soft);border-color:var(--accent);margin:0 0 16px}
+details.first ol{padding-left:1.3em}
+.say.code{display:flex;align-items:center;justify-content:center;gap:14px;font-family:ui-monospace,Consolas,monospace;font-size:1.3rem;letter-spacing:.12em;text-align:center;user-select:all}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;word-break:break-all}
+.copy{font:inherit;font-size:.85rem;letter-spacing:0;padding:6px 14px;border-radius:999px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Threadsダッシュボード<br>かんたん説明書（v6）</h1>
+  <p>コンサル生の方・テスターの方向け</p>
+</header>
+
+<nav class="toc">
+  <a href="#can">できること</a><a href="#prep">用意する物</a><a href="#install">入れ方</a><a href="#daily">毎日の流れ</a>
+  <a href="#tabs">タブの使い方</a><a href="#tips">おすすめ</a><a href="#help">困った時</a>
+</nav>
+
+<section id="can">
+  <h2><span class="n">1</span>できること</h2>
+  <ul>
+    <li>あなたの Muse が毎晩、伸びている投稿を集めて、<b>明日の下書きまで</b>作ります。</li>
+    <li>あなたは下書きを読んで直し、<b>「OK」か「NG」を付けるだけ</b>です。</li>
+    <li>OK した下書きだけが投稿されます。勝手には出ません。</li>
+    <li>投稿の数字が毎日たまり、次の下書きに生かされます。取れない数字は推測で埋めず「取得できず」と出ます。</li>
+  </ul>
+</section>
+
+<section id="prep">
+  <h2><span class="n">2</span>はじめに用意する物</h2>
+  <ul>
+    <li>ご自身の <b>Muse</b></li>
+    <li><b>zip ファイル1つ</b>（開かずにそのまま使います）</li>
+    <li><b>Threads アカウント</b>（無い方は Muse がコンセプト決めから手伝います）</li>
+  </ul>
+  <h3>ご本人がする操作（Muse が1つずつ案内します）</h3>
+  <ul>
+    <li>Muse で Threads とつなぐ（ご自身の Threads でサインイン）</li>
+    <li>自動投稿をする方は、Meta の開発者画面でアプリを作り、案内どおりに押す・サインインして同意する</li>
+  </ul>
+  <div class="warn">パスワードや認証コードは、チャットに書かないでください。</div>
+  <p class="note">Meta の画面に出る「テスター」は、つなぐための設定の名前です。テスター版とは関係ありません。</p>
+</section>
+
+<section id="install">
+  <h2><span class="n">3</span>入れ方</h2>
+  <details class="first"><summary>Muse を使ったことがない方へ（先にここから）</summary>
+    <ol>
+      <li><b>Muse を入れる</b>：スマホは App Store／Google Play で「Muse」と検索（提供元が「Meta」か確かめる）。パソコンはブラウザで <code>muse.ai</code> を開くだけで使えます。似た名前の別アプリ・別サイトに注意。</li>
+      <li><b>画面の案内どおりにログイン</b>（Meta のアカウント＝Facebook・Instagram、またはメールアドレス）。パスワードや確認コードはログイン画面にだけ入れ、Muse とのチャットには書かないでください。</li>
+      <li><b>招待コードを入れる（任意）</b>：よければ招待コード
+        <span class="say code"><span id="inv">ZJXFUA</span><button type="button" class="copy" onclick="copyInv(this)">コピー</button></span>
+        を入れてください。入れると、あなたと招待した側の両方に特典が付きます。入れなくても使えます。
+        <ul>
+          <li><b>登録してから48時間以内</b>だけ入れられます。入れるなら今日のうちに。</li>
+          <li>入れる場所：スマホは「設定」→「Redeem（招待コード）」、パソコンは「設定」→「一般」→「使用量」→「招待コード」。画面の呼び名は変わることがあります。</li>
+        </ul>
+      </li>
+      <li><b>試しに一言送ってみる</b>：「こんにちは」などで返事が来れば準備OK。このあと下の①へ進みます。</li>
+    </ol>
+  </details>
+  <ol class="steps">
+    <li><b>zip を添付して一言</b>
+      zip を開かずに Muse のチャットに添付して、こう送ります。
+      <span class="say">この zip の 00_READ_FIRST_for_Muse.md から始めて</span>
+      <ul>
+        <li>スマホで zip を付けられない時だけ、同じ名前で終わりが <code>_1file.txt</code> のファイルを添付します。</li>
+        <li>文章を貼るだけでは届きません。</li>
+      </ul>
+    </li>
+    <li><b>Muse からの質問に答える</b>（1つずつ、例つき）
+      <ul>
+        <li>ジャンル・届けたい読者・どんな投稿をしたいか</li>
+        <li>競合アカウント（無ければ空でOK）</li>
+        <li>1日の本数・投稿の時刻・チェックできる時間帯</li>
+        <li>リサーチと下書きの時刻、競合を見直す頻度</li>
+        <li>口調の手本（無くてもOK）、画面の見た目（パート1／2・5色）</li>
+      </ul>
+      <p class="note">分からない時は「わからない」と送れば、一緒に決めてくれます。あとで変えられます。</p>
+    </li>
+    <li><b>聞かれたら返事をする</b>
+      <ul>
+        <li>「この予定で登録します。よいですか？」→ 内容を見て <b>OK</b>。OK するまで毎日の仕事は登録されません。</li>
+        <li>前の版から更新する方は、OK を2回聞かれます。</li>
+        <li>初回の調査を始めてよいか聞かれたら →<b>「お願いします」</b></li>
+      </ul>
+    </li>
+    <li><b>完了を確かめる</b>
+      <ul>
+        <li>Muse から「完了です」と来る。</li>
+        <li>画面のいちばん下の1行が「版 v6 2026-11-23 …」で始まる。</li>
+        <li>その下に赤い1行があれば途中です。「00から始めて」と送ります。</li>
+      </ul>
+    </li>
+    <li><b>入れた日の夜から動き始めます</b>
+      決めた時刻に、毎日の仕事が動きます。入れた日は初回の調査中で、夜のリサーチが1回見送られることがあります（Muse が知らせます）。
+    </li>
+  </ol>
+</section>
+
+<section id="daily">
+  <h2><span class="n">4</span>毎日の流れ</h2>
+  <p class="note">時刻は例です。設定タブでいつでも変えられます。<b>あなたの出番は色の付いた1か所だけ</b>です。</p>
+  <ul class="time">
+    <li><span class="t">18時台</span><span>リサーチ（伸びた投稿を集める）</span></li>
+    <li><span class="t">その45分後</span><span>企画（明日の並びを決める）</span></li>
+    <li><span class="t">20時台</span><span>下書きが「予約・下書き」に入る</span></li>
+    <li class="you"><span class="t">22時ごろ</span><span><b>チェック：OK か NG を付けて「保存」</b></span></li>
+    <li><span class="t">夜中</span><span>OK の分を投稿の予定へ・数字の集計</span></li>
+    <li><span class="t">翌朝</span><span>夜に間に合わなかった OK を拾う</span></li>
+    <li><span class="t">投稿の時刻</span><span>OK の分が投稿される</span></li>
+  </ul>
+  <ul>
+    <li><b>自動投稿の人</b>：OK して保存した分が、翌日の投稿時刻に出ます。</li>
+    <li><b>手で投稿している人</b>：今までどおりご自身で投稿します。勝手に自動にはなりません。それでも OK／NG は付けてください。NG の理由は次の下書きに生かされます。</li>
+    <li>今日中に出したい分は、チャットで「キューに入れて」と伝えます。</li>
+    <li>ほかに、3万表示を超えた投稿の知らせ（3時間おきに確認）と、週1回の競合の見直し・週のまとめがあります。</li>
+  </ul>
+  <p class="note">目安：リサーチはチェックの2時間以上前、下書きはチェックの30分前まで。順番がずれると設定タブに「時刻の順番」の注意が出ます。</p>
+</section>
+
+<section id="tabs">
+  <h2><span class="n">5</span>タブごとの使い方</h2>
+  <p class="note">どのタブも上に「最終更新：◯月◯日 ◯◯:◯◯」が出ます。タブ名を押すと開きます。</p>
+  <details open><summary>予約・下書き（毎日使う）</summary>
+    <ul>
+      <li>本文・コメント欄・投稿予定日時をその場で直せます。</li>
+      <li>「OK（この文面で投稿してよい）」にチェック、または「NG」を押して理由を一言 →「保存」。</li>
+      <li>予約済み・投稿済みは OK／NG を変えられません。</li>
+      <li>「日時不明」と出たら、日時の欄で選び直して「保存」。</li>
+    </ul>
+  </details>
+  <details><summary>分析</summary>
+    <ul>
+      <li>フォロワー・表示合計・投稿ごとの反応・テーマ別などの傾向・勝ち投稿トップ5。</li>
+      <li>「直近30日」「全期間」で切り替え。</li>
+      <li>フォロワーの線は、記録が2日分たまると出ます。</li>
+    </ul>
+  </details>
+  <details><summary>ニーズ</summary>
+    <ul>
+      <li>「自アカの声」と「市場から見えるニーズ」。</li>
+      <li>関係ない声は「外す」（「戻す」で戻せます）。</li>
+    </ul>
+  </details>
+  <details><summary>リサーチ</summary>
+    <ul>
+      <li>集まった伸びた投稿が新しい順に並びます。「全文・構成を読む」で開きます。</li>
+      <li>「このテーマで投稿を作る」「この型で投稿を作る」で、Muse に頼めます。</li>
+    </ul>
+  </details>
+  <details><summary>競合</summary>
+    <ul><li>「競合の比較表」（本命／大きな単発／基準外）と、Muse が見つけた「候補」。</li></ul>
+  </details>
+  <details><summary>ナレッジ</summary>
+    <ul><li>確かめた知識の一覧（出典・確認日つき）。「キーワードで探す」で検索。</li></ul>
+  </details>
+  <details><summary>指示</summary>
+    <ul>
+      <li>種類（投稿作って／リサーチして／その他）を選び、内容を書いて「送る」。</li>
+      <li>一覧で 未対応／対応中／完了 と結果メモが見えます。</li>
+      <li>頼まなくても毎日の仕事は動きます。ここは上乗せのお願い用です。</li>
+    </ul>
+  </details>
+  <details><summary>設定</summary>
+    <ul>
+      <li>ジャンル・読者・競合・時刻・本数などを変えて「保存」。</li>
+      <li>「表示設定」で色とデザインを切り替え（すぐ変わります）。</li>
+    </ul>
+  </details>
+</section>
+
+<section id="tips">
+  <h2><span class="n">6</span>おすすめの使い方</h2>
+  <ul>
+    <li><b>朝</b>：「分析」で昨日の数字をひと目。</li>
+    <li><b>NG には一言理由を</b>（例：「1行目が長い」）。Muse は下書きを作る前に NG の理由を読み、同じ書き方を避けます。書くほど次から良くなります。</li>
+    <li><b>直した文面はそのまま使われます</b>（改行・絵文字も）。</li>
+    <li><b>指示の例</b>：「今週のテーマで投稿を1本作って」「◯◯をリサーチして」。</li>
+    <li><b>時刻を変えたら</b>：Muse から「よければ『00から始めて』」と来るので、一言送って OK。本数やジャンルは次の回から自動で使われます。</li>
+    <li><b>本数を0にすると</b>：その枠の下書きは作られません。</li>
+    <li><b>競合を足す</b>：設定タブの「競合アカウント（複数）」に1行1件（10件まで）→「保存」。</li>
+    <li><b>スマホでも</b>チェックできます。パート2は「あなたのタスク」から下書きへすぐ飛べます。</li>
+  </ul>
+</section>
+
+<section id="help">
+  <h2><span class="n">7</span>困った時</h2>
+  <p>まず Muse にこう送ってください。それでもだめなら連絡ください。</p>
+  <span class="say">00から始めて</span>
+  <dl class="qa">
+    <dt>画面の下に赤い1行が出る</dt>
+    <dd>版が合っていません →「00から始めて」。</dd>
+    <dt>「取得できず」「まだ数字がありません」と出る</dt>
+    <dd>推測で埋めないための表示です。理由の1行を見ます。「対象の投稿が0本」は正常。それ以外は「00から始めて」。</dd>
+    <dt>下書きが来ない</dt>
+    <dd>設定タブで本数が0でないか確認。Muse から「未納品」の知らせがあればそれに従う。どちらでもなければ「00から始めて」。</dd>
+    <dt>OK したのに今日出ない</dt>
+    <dd>夜にまとめて予定に入り、翌日の枠で出ます。急ぐ時は「キューに入れて」。</dd>
+    <dt>タブの上に1行が出る</dt>
+    <dd>
+      <ul>
+        <li>「まだ足りません…毎夜のジョブが続きを集めます」→ 待つだけでOK。</li>
+        <li>「初回の取得が途中です」「取得が止まっています」→「00から始めて」。</li>
+        <li>枠つきの太字（「検索停止」など）→「00から始めて」。Muse が次の手を見せます。</li>
+      </ul>
+    </dd>
+  </dl>
+</section>
+
+
+</div>
+<script>
+function copyInv(b){var t="ZJXFUA";function ok(){b.textContent="コピーしました";setTimeout(function(){b.textContent="コピー"},2000)}
+try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}
+function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){}a.remove()}}
+</script>
+</body>
+</html>
