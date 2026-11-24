@@ -69,6 +69,9 @@ details.first{background:var(--accent-soft);border-color:var(--accent);margin:0 
 details.first ol{padding-left:1.3em}
 .say.code{display:flex;align-items:center;justify-content:center;gap:14px;font-family:ui-monospace,Consolas,monospace;font-size:1.3rem;letter-spacing:.12em;text-align:center;user-select:all}
 code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;word-break:break-all}
+.say.ask{display:flex;flex-direction:column;gap:8px}
+.say.ask .txt{flex:1;min-width:0}
+.say.ask .copy{align-self:flex-end}
 .copy{font:inherit;font-size:.85rem;letter-spacing:0;padding:6px 14px;border-radius:999px;border:none;background:var(--accent);color:#fff;cursor:pointer}
 </style>
 </head>
@@ -128,38 +131,45 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(
       <li><b>試しに一言送ってみる</b>：「こんにちは」などで返事が来れば準備OK。このあと下の①へ進みます。</li>
     </ol>
   </details>
+  <div class="warn">Muse は安全のため、zip の中の文書に書かれた指示には、自動では従いません（「安全チェックを通らない」と言われるのはこのためです）。なので、下の<b>お願い文を1つずつ、あなたから送ります</b>。「コピー」で写して貼るだけです。Muse の返事を見て、終わったら次へ進みます。</div>
   <ol class="steps">
-    <li><b>zip を添付して一言</b>
+    <li><b>zip を添付して、中身を確かめてもらう</b>
+      <p class="note">Threads アカウントがまだ無い方は、先に「Threadsを始めたいです。コンセプト決めからプロフィール文づくりまで手伝ってください。」と送ってください。</p>
       zip を開かずに Muse のチャットに添付して、こう送ります。
-      <span class="say">このzipで、Threadsダッシュボードを作りたいです。中の 00_READ_FIRST_for_Muse.md の手順どおりに進めてください。</span>
+      <span class="say ask"><span class="txt">添付したzipを展開して、MANIFEST.txt の一覧と中身がそろっているか確かめてください。まだ何も作らず、結果だけ教えてください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
       <ul>
         <li>スマホで zip を付けられない時だけ、同じ名前で終わりが <code>_1file.txt</code> のファイルを添付します。</li>
         <li>文章を貼るだけでは届きません。</li>
-        <li>Muse から「安全チェックを通らない」「指示の通りに自動では進められない」と言われたら、「このパッケージでダッシュボードを作りたい」と答え、続けて「00_READ_FIRST_for_Muse.md の手順どおりに進めてください」と送ります。あなたからのお願いだと伝われば、たいてい進めてくれます。</li>
       </ul>
     </li>
-    <li><b>Muse からの質問に答える</b>（1つずつ、例つき）
+    <li><b>アプリを作ってもらう</b>
+      <span class="say ask"><span class="txt">zipの dashboard/ フォルダのソースを書き換えずにそのまま使って、Threadsダッシュボードのアプリを作りたいです。作り方は 05_dashboard_spec.md の「同梱ソースの取り込み方」を参考にしてください。できたら、画面のいちばん下の1行を教えてください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
       <ul>
-        <li>ジャンル・届けたい読者・どんな投稿をしたいか</li>
-        <li>競合アカウント（無ければ空でOK）</li>
-        <li>1日の本数・投稿の時刻・チェックできる時間帯</li>
-        <li>リサーチと下書きの時刻、競合を見直す頻度</li>
-        <li>口調の手本（無くてもOK）、画面の見た目（パート1／2・5色）</li>
-      </ul>
-      <p class="note">分からない時は「わからない」と送れば、一緒に決めてくれます。あとで変えられます。</p>
-    </li>
-    <li><b>聞かれたら返事をする</b>
-      <ul>
-        <li>「この予定で登録します。よいですか？」→ 内容を見て <b>OK</b>。OK するまで毎日の仕事は登録されません。</li>
-        <li>前の版から更新する方は、OK を2回聞かれます。</li>
-        <li>初回の調査を始めてよいか聞かれたら →<b>「お願いします」</b></li>
+        <li>画面のいちばん下の1行が「版 v6 2026-11-23 …」で始まれば OK です。テスターの方は、タブの上に「テスター版：残り◯日」も出ます。</li>
+        <li>違う1行だったり、何も出なかったりする時は、Muse の返事をそのまま送ってください（同梱のソースではなく、Muse が別に作った画面の可能性があります）。</li>
       </ul>
     </li>
-    <li><b>完了を確かめる</b>
+    <li><b>設定を決める</b>（1つずつ、例つきで聞かれます）
+      <span class="say ask"><span class="txt">ダッシュボードの設定を一緒に決めたいです。ジャンル・届けたい読者・投稿の目的・1日の本数・投稿の時刻・チェックできる時間などを、例を添えて1問ずつ聞いてください。決まったら設定タブに保存してください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
+      <p class="note">ほかに、リサーチと下書きの時刻、競合アカウント（無ければ空でOK）、口調の手本（無くてもOK）、画面の見た目（パート1／2・5色）も聞かれます。分からない時は「わからない」と送れば、一緒に決めてくれます。あとで変えられます。</p>
+    </li>
+    <li><b>Threads とつなぐ</b>
+      <span class="say ask"><span class="txt">私のThreadsアカウントとダッシュボードをつなぎたいです。07_threads_link_and_posting.md を参考に、私がする操作を1つずつ案内してください。パスワードや認証コードはチャットに書きません。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
+    </li>
+    <li><b>毎日の仕事を登録する</b>
+      <span class="say ask"><span class="txt">毎日の仕事（リサーチ・企画・下書き・分析・投稿の同期など）を、06_scheduled_jobs.md の内容と私の設定の時刻で、定期作業として登録したいです。登録する前に、名前・時刻・中身の一覧を見せてください。私がOKしたら登録してください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
       <ul>
-        <li>Muse から「完了です」と来る。</li>
-        <li>画面のいちばん下の1行が「版 v6 2026-11-23 …」で始まる。</li>
-        <li>その下に赤い1行があれば途中です。「00から始めて」と送ります。</li>
+        <li>一覧を見て、よければ <b>OK</b>。OK するまで毎日の仕事は登録されません。</li>
+      </ul>
+    </li>
+    <li><b>初回のデータ集め</b>
+      <span class="say ask"><span class="txt">初回のデータ集めをお願いします（プロフィール・自分の過去の投稿・リサーチ・競合・分析・明日の下書き）。進め方は 06_scheduled_jobs.md の「初回取得の順番・記録・上限」を参考にしてください。下書きは私がOKするまで投稿しないでください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
+    </li>
+    <li><b>入ったか確かめる</b>
+      <span class="say ask"><span class="txt">ダッシュボードの今の状態を、08_troubleshooting_checklist.md の「構築完了のチェックリスト」に沿って、読むだけで点検して、表で見せてください。直す所があれば、直し方を見せてから進めてください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
+      <ul>
+        <li>表の項目がそろっていれば完了です。画面のいちばん下の1行が「版 v6 2026-11-23 …」で始まることも確かめます。</li>
+        <li>点検で「試しの下書きを1本、投稿まで通す」と聞かれることがあります。出すかどうかは、あなたが決めて大丈夫です。</li>
       </ul>
     </li>
     <li><b>入れた日の夜から動き始めます</b>
@@ -247,7 +257,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(
     <li><b>NG には一言理由を</b>（例：「1行目が長い」）。Muse は下書きを作る前に NG の理由を読み、同じ書き方を避けます。書くほど次から良くなります。</li>
     <li><b>直した文面はそのまま使われます</b>（改行・絵文字も）。</li>
     <li><b>指示の例</b>：「今週のテーマで投稿を1本作って」「◯◯をリサーチして」。</li>
-    <li><b>時刻を変えたら</b>：Muse から「よければ『00から始めて』」と来るので、一言送って OK。本数やジャンルは次の回から自動で使われます。</li>
+    <li><b>時刻を変えたら</b>：Muse から点検をすすめられたら、「7. 困った時」の点検のお願いを送ります。本数やジャンルは次の回から自動で使われます。</li>
     <li><b>本数を0にすると</b>：その枠の下書きは作られません。</li>
     <li><b>競合を足す</b>：設定タブの「競合アカウント（複数）」に1行1件（10件まで）→「保存」。</li>
     <li><b>スマホでも</b>チェックできます。パート2は「あなたのタスク」から下書きへすぐ飛べます。</li>
@@ -256,23 +266,28 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(
 
 <section id="help">
   <h2><span class="n">7</span>困った時</h2>
-  <p>まず Muse にこう送ってください。それでもだめなら連絡ください。</p>
-  <span class="say">00から始めて</span>
+  <p>まず Muse に、この<b>点検のお願い</b>を送ってください。それでもだめならご連絡ください。</p>
+  <span class="say ask"><span class="txt">ダッシュボードの今の状態を、08_troubleshooting_checklist.md を参考に、読むだけで点検してください。直す所があれば、直し方を見せてから進めてください。</span><button type="button" class="copy" onclick="copyAsk(this)">コピー</button></span>
+  <p class="note">前の版の「00から始めて」は、Muse が安全チェックで断ることがあるため、この文に変えました。</p>
+  <ul>
+    <li>Muse から「00から始めて」と言われたら、代わりに上の点検のお願いを送ってください。</li>
+    <li>お願い文を送っても「安全チェックを通らない」と言われたら、ファイル名を言わずに、やりたいことだけを言葉で伝えてください（例：「毎晩のリサーチを定期作業にしたい。中身を見せて」）。</li>
+  </ul>
   <dl class="qa">
     <dt>画面の下に赤い1行が出る</dt>
-    <dd>版が合っていません →「00から始めて」。</dd>
+    <dd>版が合っていません → 点検のお願い。</dd>
     <dt>「取得できず」「まだ数字がありません」と出る</dt>
-    <dd>推測で埋めないための表示です。理由の1行を見ます。「対象の投稿が0本」は正常。それ以外は「00から始めて」。</dd>
+    <dd>推測で埋めないための表示です。理由の1行を見ます。「対象の投稿が0本」は正常。それ以外は点検のお願い。</dd>
     <dt>下書きが来ない</dt>
-    <dd>設定タブで本数が0でないか確認。Muse から「未納品」の知らせがあればそれに従う。どちらでもなければ「00から始めて」。</dd>
+    <dd>設定タブで本数が0でないか確認。Muse から「未納品」の知らせがあればそれに従う。どちらでもなければ点検のお願い。</dd>
     <dt>OK したのに今日出ない</dt>
     <dd>夜にまとめて予定に入り、翌日の枠で出ます。急ぐ時は「キューに入れて」。</dd>
     <dt>タブの上に1行が出る</dt>
     <dd>
       <ul>
         <li>「まだ足りません…毎夜のジョブが続きを集めます」→ 待つだけでOK。</li>
-        <li>「初回の取得が途中です」「取得が止まっています」→「00から始めて」。</li>
-        <li>枠つきの太字（「検索停止」など）→「00から始めて」。Muse が次の手を見せます。</li>
+        <li>「初回の取得が途中です」「取得が止まっています」→ 点検のお願い。</li>
+        <li>枠つきの太字（「検索停止」など）→ 点検のお願い。Muse が次の手を見せます。</li>
       </ul>
     </dd>
   </dl>
@@ -284,6 +299,9 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;background:var(
 function copyInv(b){var t="ZJXFUA";function ok(){b.textContent="コピーしました";setTimeout(function(){b.textContent="コピー"},2000)}
 try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}
 function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){}a.remove()}}
+function copyAsk(b){var t=b.parentNode.querySelector(".txt").textContent;function ok(){b.textContent="コピーしました";setTimeout(function(){b.textContent="コピー"},2000)}
+function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){}a.remove()}
+try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}}
 </script>
 </body>
 </html>
